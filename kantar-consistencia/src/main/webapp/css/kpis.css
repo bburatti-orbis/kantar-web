@@ -1,0 +1,53 @@
+#general {
+	/* height:100%; */
+	width:100%;
+/* 	background-color:black; */
+}
+#datos {
+	height:140px;
+	width:100%;
+	/* background-color:red; */
+}
+#datosA {
+	height:100%;
+	width:50%;
+	/* background-color:white; */
+	float:left;
+}
+#datosB {
+	height:100%;
+	width:50%;
+	/* background-color:black; */
+	float:right;
+}
+#parametros {
+	height:250;
+	width:100%;
+	/* background-color:gray; */
+}
+#semaforoDiv {
+	height:250;
+	width:100%;
+	/* background-color:blue; */
+}
+#label {
+	font-color:white;
+}
+table{
+	background-color: white;
+    color: black;
+    border-collapse: collapse;
+    width:100%;
+}
+th, td {
+    border: 1px solid black;
+    height: 20px; 
+    width:180px;
+    text-align:center; 
+    vertical-align:middle;
+}
+th{
+	color: black;
+	font-weight: bold;
+}
+hr { background-color: white; height: 3px; border: 0; }

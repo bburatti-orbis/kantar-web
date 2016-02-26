@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This web.xml file is not required when using Servlet 3.0 container, 
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html#d4e194 -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>kantar</display-name>
+  <servlet>
+    <servlet-name>log4j-init</servlet-name>
+    <servlet-class>cl.signosti.kantar.consistencia.loggers.Log4jLauncher</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>cl.signosti.kantar.consistencia</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+    	<param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <url-pattern>/webresources/*</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+  <servlet-name>dwr-invoker</servlet-name>
+<!--   <display-name>DWR Servlet</display-name> -->
+  <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+  <init-param>
+     <param-name>debug</param-name>
+     <param-value>true</param-value>
+  </init-param>
+</servlet>
+ 
+<servlet-mapping>
+  <servlet-name>dwr-invoker</servlet-name>
+  <url-pattern>/dwr/*</url-pattern>
+</servlet-mapping>
+  
+<!--   <servlet> -->
+<!--     <description></description> -->
+<!--     <display-name>Serv_prueba</display-name> -->
+<!--     <servlet-name>Serv_prueba</servlet-name> -->
+<!--     <servlet-class>cl.signosti.kantar.consistencia.Serv_prueba</servlet-class> -->
+<!--   </servlet> -->
+<!--   <servlet-mapping> -->
+<!--     <servlet-name>Serv_prueba</servlet-name> -->
+<!--     <url-pattern>/Serv_prueba</url-pattern> -->
+<!--   </servlet-mapping> -->
+</web-app>

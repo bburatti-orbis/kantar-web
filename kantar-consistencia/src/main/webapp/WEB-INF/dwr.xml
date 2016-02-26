@@ -1,0 +1,42 @@
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://directwebremoting.org/schema/dwr30.dtd">
+
+<dwr>
+  <allow>
+    <create creator="new" javascript="KantarDWR">
+        <param name="class" value="cl.signosti.kantar.consistencia.dwr.KantarDWR" />        
+    </create>
+    
+    <create creator="new" javascript="MonitorDWR">
+        <param name="class" value="cl.signosti.kantar.consistencia.dwr.MonitorDWR" />        
+    </create>
+    
+    <create creator="new" javascript="ModuloKpiDWR">
+        <param name="class" value="cl.signosti.kantar.consistencia.dwr.ModuloKpiDWR" />        
+    </create>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Tareasm"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Bitacora"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.AccionBitacora"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Area"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Usuariom"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.PerformanceAreas"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ReportePerformance"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ListadoProyectos"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ReportesRevisarProyecto"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ConexionesM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ListadoKpiM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Paisesm"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.AlcancesKpiM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.CategoriaKpiM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ParametrosKpi"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.ParametrosKpiM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.StoreProcedure"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Semaforo"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.OperadorSemaforo"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.KpiM"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.SemaforoKpi"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.GrillaSemaforo"/>
+    <convert converter="bean" match="cl.signosti.kantar.consistencia.modelo.Proyectom"/>
+    
+  </allow>
+</dwr>
+

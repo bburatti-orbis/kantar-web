@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	  http://www.springframework.org/schema/tx 
+	  http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://192.168.2.12:3306/consistenciadb" />	
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	<bean id="usuariosdao" class="cl.signosti.kantar.consistencia.dao.UsuariosDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="PaisesDao" class="cl.signosti.kantar.consistencia.dao.PaisesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="ClienteDao" class="cl.signosti.kantar.consistencia.dao.ClienteDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="BasesDao" class="cl.signosti.kantar.consistencia.dao.BasesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="EjecucionesDao" class="cl.signosti.kantar.consistencia.dao.EjecucionesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="NomesclaturaDao" class="cl.signosti.kantar.consistencia.dao.NomesclaturaDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="MarcaDao" class="cl.signosti.kantar.consistencia.dao.MarcaDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="ReportesDao" class="cl.signosti.kantar.consistencia.dao.ReportesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+		<bean id="ProcesoDao" class="cl.signosti.kantar.consistencia.dao.ProcesoDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="ProyectoDao" class="cl.signosti.kantar.consistencia.dao.ProyectoDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="CicloDao" class="cl.signosti.kantar.consistencia.dao.CicloDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="TareasDao" class="cl.signosti.kantar.consistencia.dao.TareasDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="ConjuntoDao" class="cl.signosti.kantar.consistencia.dao.ConjuntoDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="BitacoraDao" class="cl.signosti.kantar.consistencia.dao.BitacoraDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="MonitorDao" class="cl.signosti.kantar.consistencia.dao.MonitorDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="KpiDao" class="cl.signosti.kantar.consistencia.dao.KpiDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+</beans>
