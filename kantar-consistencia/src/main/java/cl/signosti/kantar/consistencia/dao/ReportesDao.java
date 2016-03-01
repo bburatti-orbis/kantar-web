@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,6 @@ import cl.signosti.kantar.consistencia.modelo.Hoja1_2;
 import cl.signosti.kantar.consistencia.modelo.Hoja1m;
 import cl.signosti.kantar.consistencia.modelo.Hoja2m;
 import cl.signosti.kantar.consistencia.modelo.ListadoProyectos;
-import cl.signosti.kantar.consistencia.modelo.PerformanceAreas;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
 import cl.signosti.kantar.consistencia.modelo.ReportePerformance;
 import cl.signosti.kantar.consistencia.modelo.ReportesRevisarProyecto;
@@ -38,7 +38,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 	private static final long serialVersionUID = -483909151431734110L;
 	private static final Logger logger = Logger.getLogger(ReportesDao.class);
 
-	public Map<Integer, ResutadoGeneralm> getResultGeneral(int inc, int limit) {
+	public Map<Integer, ResutadoGeneralm> getResultGeneral(int inc, int limit, String desde, String hasta) {
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -66,12 +66,20 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				 +"LEFT OUTER JOIN periodos r ON r.id = b.periodos_id "
   				 +"LEFT OUTER JOIN usuarios u ON b.usuarios_id = u.id "
                  +"LEFT OUTER JOIN clientes c ON b.clientes_id = c.id "
+  			+"WHERE e.fechaTermino >= ? && e.fechaTermino <= ? "
             +"ORDER BY e.fechaTermino DESC "
-            +"LIMIT "+inc+","+limit;
+            +"LIMIT ?,?";
 
 		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 			conn = getDataSource().getConnection();
 			pre = conn.prepareStatement(sql);
+			Date parsed = format.parse(desde);
+			pre.setDate(1, new java.sql.Date(parsed.getTime()));
+			parsed = format.parse(hasta);
+			pre.setDate(2, new java.sql.Date(parsed.getTime()));
+			pre.setInt(3, inc);
+			pre.setInt(4, limit);
 			rs = pre.executeQuery(); 
 
 			int k = 0;
@@ -256,7 +264,8 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		Funcionesvarias fun= new Funcionesvarias();
 		Map<Integer, DetalleNomesclm> lista = new HashMap<Integer, DetalleNomesclm>();
 
-		String sql = "SELECT 	m.glosa AS linea,"+  
+		String sql = "SELECT 	m.glosa AS linea,"+ 
+					"m.linea, "+
 					"m.nivel, "+
 					"m.valor AS total_informado, "+
 					"COALESCE( (m.sumaHijos), m.valor ) AS total_calculado, "+

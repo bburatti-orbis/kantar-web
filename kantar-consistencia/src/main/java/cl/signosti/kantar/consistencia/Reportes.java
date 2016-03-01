@@ -3,6 +3,9 @@ package cl.signosti.kantar.consistencia;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,29 +59,46 @@ public class Reportes {
 	@GET
 	@Path("Report/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResultadoGeneral getreportg(@QueryParam("inc") int inc, @QueryParam("limit") int limit) {
+	public ResultadoGeneral getreportg(@QueryParam("inc") int inc, 
+			@QueryParam("limit") int limit,
+			@QueryParam("desde") String desde,
+			@QueryParam("hasta") String hasta) {
 
+		if(inc <= 0 || limit <= 0){
+			inc = 0;
+			limit = 100;
+		}
+		Date date = Calendar.getInstance().getTime();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
+		if(desde == null || desde.length() < 8){				    
+			desde = sdf.format(date);
+		}
+		if(hasta == null || hasta.length() < 8){
+			hasta = sdf.format(date);
+		}
+		sdf.setLenient(false);
+		try{
+			Date f1 = sdf.parse(desde);
+			Date f2 = sdf.parse(hasta);
+			if(f2.getTime() < f1.getTime()){
+				hasta = desde;
+			}
+		}catch(Exception e){
+			desde = sdf.format(date);
+			hasta = sdf.format(date);
+		}
+		
 		LocatorDao.getInstance();
 		ReportesDao report = LocatorDao.getReportesDao();
 		Map<Integer, ResutadoGeneralm> lista = new HashMap<Integer, ResutadoGeneralm>();
 		ResultadoGeneral rslt = new ResultadoGeneral();
 		
-		if(inc <= 0){
-			inc = 0;
-		}
-		if(limit <= 0){
-			limit = 100;
-		}
-		
-		lista = report.getResultGeneral(inc, limit);
+		lista = report.getResultGeneral(inc, limit, desde, hasta);
 		rslt.setLista(lista);
 		rslt.setInc(inc);
 		rslt.setLimit(limit);
-
-//		Gson gson = new Gson();
-//		String resp = gson.toJson(lista);
-//
-//		return Response.ok(resp).build();
+		rslt.setDesde(desde);
+		rslt.setHasta(hasta);
 		
 		return rslt;
 
@@ -141,11 +161,6 @@ public class Reportes {
 		Map<Integer, DetalleNomesclm> lista = new HashMap<Integer, DetalleNomesclm>();
 		lista = report.getdetallenom(c);
 
-//		Gson gson = new Gson();
-//		String resp = gson.toJson(lista);
-//
-//		return Response.ok(resp).build();
-		
 		return lista;
 
 	}

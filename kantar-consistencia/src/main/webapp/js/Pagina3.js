@@ -10,7 +10,10 @@ $(function() {
 	});
 
 	function actualiza() {
-		var url = ruta + "Reportes/Report/";
+		var url = ruta + "Reportes/Report";
+		if(window.dattabla != null){
+			url = ruta + "Reportes/Report?inc="+dattabla.inc+"&limit="+dattabla.limit+"&desde="+$("#desde").val()+"&hasta="+$("#hasta").val()+"&estado=";
+		}
 		$.getJSON(url).done(function(dat) {
 			window.dattabla = dat;
 
@@ -62,6 +65,8 @@ $(function() {
 
 		$("#polizas").find('tbody').html(list);
 		$("#fecha").html(fecha);
+		$("#desde").val(window.dattabla.desde);
+		$("#hasta").val(window.dattabla.hasta);
 	}
 	$("#volver").on("click", function() {
 		event.preventDefault();

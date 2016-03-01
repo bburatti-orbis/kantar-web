@@ -33,17 +33,33 @@
 			</nav>
 
 			<hr></hr>
-			<div class="controles_fila">
-
+						<div class="controles_fila">
 				<div class="control">
 					<div class="tit_control">
 						<p>Búsqueda</p>
 					</div>
 					<div>
 						<p>
-							<input type="text" class="llama_periodo_actual"
-								placeholder="Ingrese Busqueda" onkeyup="doSearch()"
-								id="busqueda">
+							<input type="text" class="llama_periodo_actual" placeholder="Ingrese Búsqueda" onkeyup="doSearch()" id="busqueda">
+						</p>
+					</div>
+				</div>
+				<div class="control">
+					<div class="tit_control"><p>Entre</p></div>
+					<div>
+						<p>
+							<input type="text" class="llama_periodo_actual" placeholder="Desde" id="desde">
+						</p>
+						<p>
+							<input type="text" class="llama_periodo_actual" placeholder="Hasta" id="hasta">
+						</p>
+					</div>
+				</div>
+				<div class="control">
+					<div class="tit_control"><p>Estado</p></div>
+					<div>
+						<p>
+							<input type="text" class="llama_periodo_actual" placeholder="Estado" id="estado">
 						</p>
 					</div>
 				</div>
