@@ -281,7 +281,8 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			"LEFT OUTER JOIN ejecuciones j  ON j.Bases_id=b.id "+
 			"LEFT OUTER JOIN paises p ON p.id= b.Paises_id "+
 			"LEFT OUTER JOIN estados e ON e.id= m.estadoCInterna "+
-			"WHERE n.id=?";
+			"WHERE n.id=? "+
+			"ORDER BY m.linea ASC";
 
 		try {
 			conn = getDataSource().getConnection();
