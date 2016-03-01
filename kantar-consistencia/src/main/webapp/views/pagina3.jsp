@@ -57,9 +57,15 @@
 				</div>
 				<div class="control">
 					<div class="tit_control"><p>Estado</p></div>
-					<div>
+					<div style="width: inherit;">
 						<p>
-							<input type="text" class="llama_periodo_actual" placeholder="Estado" id="estado">
+							<select id="estado" onchange="doSearchEstado()">
+								<option></option>
+								<option>TERMINADA</option>
+								<option>REVISAR</option>
+								<option>ENTREGAR</option>
+								<option>EN PROCESO</option>
+							</select>
 						</p>
 					</div>
 				</div>

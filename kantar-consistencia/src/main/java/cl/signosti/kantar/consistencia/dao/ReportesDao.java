@@ -98,32 +98,30 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				int ch= rs.getInt("estadoCHistorica");
 				
 				
-				String a= rs.getString("CI");
-				if(a.equals("4")){
+				String estadoCI = rs.getString("CI");
+				if(estadoCI.equals("4")){
 					result.setCI("ERRONEA");	
 				}
 				else{
 					result.setCI("OK");
 				}
-				a= rs.getString("CH");
-				if(a.equals("4")){
+				String estadoCH = rs.getString("CH");
+				if(estadoCH.equals("4")){
 					result.setCH("ERRONEA");	
 				}
 				else{
 					result.setCH("OK");
 				}
+									
 				
-				if(ci==4){
-					
-				}
-					
-				
-				
-				
-				if(ci==102 && ch==108){
-					result.setEstado("TERMINADA");	
-				}
-				else{
+				if(ci == 103 && ch == 109){
+					result.setEstado("ENTREGAR");
+				} else if(ci==102 && ch==108){
+					result.setEstado("TERMINADA");
+					if(!estadoCI.equals("4") || !estadoCH.equals("4")){
+						result.setEstado("REVISAR");
+					}
+				} else {
 					result.setEstado("EN PROCESO");
 				}
 				result.setUsuario(rs.getString("nom")+ " "+ rs.getString("apellido"));
