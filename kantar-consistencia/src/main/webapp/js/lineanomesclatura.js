@@ -37,7 +37,8 @@ $(function() {
 			for(var t=0; t<value.nivel; t++){
 				espacio+="&nbsp;&nbsp;";
 			}
-			list += "<td class='linea'>"+espacio + value.linea + "</td>";
+			list += "<td class='linea'>"+ value.linea + "</td>";
+			list += "<td>" + espacio + value.glosa + "</td>";
 			list += "<td>" + value.nivel + "</td>";
 			list += "<td>" + value.totalInformado + "</td>";
 			list += "<td>" + value.totalCalculado + "</td>";

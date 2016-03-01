@@ -264,7 +264,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		Funcionesvarias fun= new Funcionesvarias();
 		Map<Integer, DetalleNomesclm> lista = new HashMap<Integer, DetalleNomesclm>();
 
-		String sql = "SELECT 	m.glosa AS linea,"+ 
+		String sql = "SELECT 	m.glosa AS glosa,"+ 
 					"m.linea, "+
 					"m.nivel, "+
 					"m.valor AS total_informado, "+
