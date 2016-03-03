@@ -77,7 +77,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			Date parsed = format.parse(desde);
 			pre.setDate(1, new java.sql.Date(parsed.getTime()));
 			parsed = format.parse(hasta);
-			pre.setDate(2, new java.sql.Date(parsed.getTime()));
+			pre.setDate(2, new java.sql.Date(parsed.getTime() + 24*60*60*1000));
 			pre.setInt(3, inc);
 			pre.setInt(4, limit);
 			rs = pre.executeQuery(); 
