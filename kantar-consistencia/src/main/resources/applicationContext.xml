@@ -10,9 +10,15 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://192.168.2.12:3306/consistenciadb" />	
+		
+<!-- 		<property name="url" value="jdbc:mysql://192.168.2.12:3306/consistenciadb" />	 -->
+<!-- 		<property name="username" value="root" /> -->
+<!-- 		<property name="password" value="root" /> -->
+		
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/consistenciadb" />	
 		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="password" value="hal9000" />
+		
 	</bean>
 	<bean id="usuariosdao" class="cl.signosti.kantar.consistencia.dao.UsuariosDao">
 		<property name="dataSource" ref="dataSource" />

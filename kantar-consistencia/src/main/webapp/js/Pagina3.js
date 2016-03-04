@@ -31,6 +31,7 @@ $(function() {
 		var list = "";
 		var error = "";
 		var clase = "";
+		var errorCH = false;
 		$.each(dattabla.lista, function(index, value) {
 
 			list += "<tr class='alternar'>";
@@ -51,6 +52,7 @@ $(function() {
 					+ "</a></td>";
 			if (value.ch == "ERRONEA") {
 				clase = "class='error'";
+				errorCH = true;
 			} else {
 				clase = "class='ok'";
 			}
@@ -59,7 +61,11 @@ $(function() {
 				list += "<td> <a  " + clase + ">" + value.ch + "</a></td>";
 			} else {
 				list += "<td> <a href='" + value.link + "' " + clase + ">"
-						+ value.ch + "</a></td>";
+						+ value.ch + "</a>";
+				if(errorCH){
+					list += " <span id='errorCH' class='ui-icon ui-icon-check'></span>";
+				}
+				list += "</td>";				
 			}
 
 			list += "<td>" + value.fecha_ini + "</td>";
@@ -73,6 +79,7 @@ $(function() {
 		$("#desde").val($.datepicker.formatDate('dd/mm/yy', new Date(window.dattabla.desde.substr(0, 4), window.dattabla.desde.substr(4, 2) - 1, window.dattabla.desde.substr(6, 2))));
 //		$("#hasta").val(window.dattabla.hasta);
 		$("#hasta").val($.datepicker.formatDate('dd/mm/yy', new Date(window.dattabla.hasta.substr(0, 4), window.dattabla.hasta.substr(4, 2) - 1, window.dattabla.hasta.substr(6, 2))));
+		doSearchAll();
 	}
 	$("#volver").on("click", function() {
 		event.preventDefault();
@@ -81,6 +88,20 @@ $(function() {
 	$("#actualiza").on("click", function() {
 		event.preventDefault();
 		actualiza();
+	});
+	$("#polizas").on("click", $(".errorCH"), function(){ 
+		 $('#dialog').dialog('open'); 
+	});
+	
+	$("#dialog").dialog({ 
+		autoOpen: false,
+		 width:'auto'
+	});
+	
+	$("#autorizar").on("click", function() {
+		event.preventDefault();
+		$('#dialog').dialog('close');
+		alert("Autorizado");
 	});
 
 	setInterval(actualiza, 60000);
