@@ -60,7 +60,8 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 					"	join paises p on k.Paises_id = p.id"+
 					"	join alcanceskpis akpi on akpi.id = k.AlcancesKPIs_id"+
 					"	join areaskpis ak on ak.id = k.AreasKPIs_id"+
-					"	join categoriaskpis ck on ck.id = k.CategoriasKPIs_id";
+					"	join categoriaskpis ck on ck.id = k.CategoriasKPIs_id"
+					+ " order by k.updated_at desc";
 		 System.out.println(sql);
 	
 		try {

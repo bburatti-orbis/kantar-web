@@ -51,12 +51,7 @@
 				<div id="datos" title="Datos Generales">
 					<h1>Datos Generales</h1><br /> 
 					<div id="datosA">
-						Nombre Kpi: <input type="text" id="nombre" /><br /><br />  
-						Tipo: <select id="tipo">
-							<option value='-'>Seleccione...</option>
-							<option value='0'>Interno</option>
-							<option value='1'>Externo</option>
-						</select><br /> <br /> 
+
 						<label id="paisesL">Pa&iacute;s: </label>
 						<select id="paises">
 							<option value='-'>Seleccione...</option>
@@ -66,12 +61,6 @@
 						</select> <br />
 					</div>
 					<div id="datosB">
-						&Aacute;lcance: <select id="alcances">
-							<option value='-'>Seleccione...</option>
-						</select> <br /> <br /> 
-						&Aacute;rea: <select id="areas">
-							<option value='-'>Seleccione...</option>
-						</select> <br /> <br /> 
 						Categor&iacute;a: <select id="categorias">
 							<option value='-'>Seleccione...</option>
 						</select> <br />

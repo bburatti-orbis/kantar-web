@@ -277,7 +277,7 @@
 				fila = fila.replace("$_orden_$", corre);
 				fila = fila.replace("$_parametro_$", $('#nombreParam option:selected').html());
 				fila = fila.replace("&_valor_&", $('#valorParam').val());
-				fila = fila.replace("$_editar_$", "<input type='button' value='Edit' onclick='editar("+corre+");' /> <input type='button' value='Delete'onclick='borrar("+corre+");' />");
+				fila = fila.replace("$_editar_$", "<input type='button' value='Editar' onclick='editar("+corre+");' /> <input type='button' value='Eliminar'onclick='borrar("+corre+");' />");
 				filas += fila;
 				$("#parametrosT").html($("#parametrosT").html()+filas);
 				$.modal.close();	
@@ -399,7 +399,7 @@
 			$(arrTD[0]).html(correl);
 			$(this).attr("id", "fila"+correl);
 			if(correl > 2)
-				$(arrTD[3]).html("<input type='button' value='Edit' onclick='editarS("+correl+");' /> <input type='button' value='Delete'onclick='borrarS("+correl+");' />");
+				$(arrTD[3]).html("<input type='button' value='Editar' onclick='editarS("+correl+");' /> <input type='button' value='Eliminar'onclick='borrarS("+correl+");' />");
 			correl++;
 		});
 		sCorre = arrF.length;
@@ -413,7 +413,7 @@
 			$(arrTD[0]).html(correl);
 			$(this).attr("id", "reg"+correl);
 			if(correl > 2)
-				$(arrTD[3]).html("<input type='button' value='Edit' onclick='editar("+correl+");' /> <input type='button' value='Delete'onclick='borrar("+correl+");' />");
+				$(arrTD[3]).html("<input type='button' value='Editar' onclick='editar("+correl+");' /> <input type='button' value='Eliminar'onclick='borrar("+correl+");' />");
 			correl++;
 		});
 		corre = arrF.length;
@@ -448,7 +448,7 @@
 				fila = fila.replace("$_umbral_$", $('#umbral option:selected').html());
 				fila = fila.replace("$_operador_$", $('#operador option:selected').html());
 				fila = fila.replace("$_valor_$", $('#valorSema').val());
-				fila = fila.replace("$_accion_$", "<input type='button' value='Edit' onclick='editarS("+sCorre+");' /> <input type='button' value='Delete'onclick='borrarS("+sCorre+");' />");
+				fila = fila.replace("$_accion_$", "<input type='button' value='Editar' onclick='editarS("+sCorre+");' /> <input type='button' value='Eliminar' onclick='borrarS("+sCorre+");' />");
 				filas += fila;
 				$("#semaforoT").html($("#semaforoT").html()+filas);
 				$.modal.close();
@@ -625,17 +625,20 @@
 				msg+="Error al generar KPI \n";
 			}
 			if(gParam){
-				msg+="El Parametro de KPI ha sigo grabado exitosamente \n";
+				//msg+="El Parametro de KPI ha sigo grabado exitosamente \n";
 			}else{
 				msg+="Error al generar Parametro KPI \n";
 			}
 			if(gSema){
-				msg+="El Rango de Semaforo ha sigo grabado exitosamente \n";
+				//msg+="El Rango de Semaforo ha sigo grabado exitosamente \n";
 			}else{
 				msg+="Error al generar Rango de Semaforo \n";
 			}
 			alert(msg);
-			window.location.reload();
+			if(msg == "El KPI ha sigo grabado exitosamente \n"){
+				history.back();
+			}
+			//window.location.reload();
 		}
 		
 	}

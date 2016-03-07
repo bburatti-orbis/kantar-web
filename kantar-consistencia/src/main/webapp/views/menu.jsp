@@ -7,15 +7,15 @@
 		</ul>
 	</li>
 	
-	<li><a href="#">KPI's</a>
-		<ul>
-			<li><a href="#" id="mantenedor">prueba</a></li>
-		</ul>
-	</li>
+<!-- 	<li><a href="#">KPI's</a> -->
+<!-- 		<ul> -->
+<!-- 			<li><a href="#" id="mantenedor">prueba</a></li> -->
+<!-- 		</ul> -->
+<!-- 	</li> -->
 	<li><a href="#">Mantenedor</a>
 		<ul>
 			<li><a href="#" id="creaconjunto">Crear Conjunto de bases</a></li>
-
+			<li><a href="#" id="mantenedor">KPI´s</a></li>
 		</ul></li>
 	<li><a href="#">Gestion</a>
 
