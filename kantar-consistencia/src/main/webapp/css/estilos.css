@@ -301,6 +301,13 @@ input#pass {
 	margin-left: 1%;
 	margin-right: 4%;
 }
+.control_filtro {
+	width: 20%;
+	height: 27px;
+	float: left;
+	margin-left: 1%;
+	margin-right: 4%;
+}
 .tit_control {
 	width: 50%;
 	float: left;

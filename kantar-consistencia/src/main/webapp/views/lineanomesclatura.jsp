@@ -68,6 +68,7 @@
                 <table id="polizas">  
                 <thead>          
                   <tr>
+                  	<th scope="col">Linea</th>
                     <th scope="col">Nomenclatura</th>
                     <th scope="col">Nivel</th>
                     <th scope="col">Total Informado</th>

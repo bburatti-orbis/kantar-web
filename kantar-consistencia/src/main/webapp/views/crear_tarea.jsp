@@ -99,10 +99,10 @@
                    <div class="control">
                    	<select class="select" id="tiempo" >
                    	<option disabled selected>Unidad de tiempo</option>
-                	<option value="Horas">Horas</option>
-                	<option value="Dias">Dias</option>
-                	<option value="Meses">Meses</option>
-                	<option value="Años">Años</option>
+                	<option value="1">Horas</option>
+                	<option value="2">Dias</option>
+                	<option value="3">Meses</option>
+                	<option value="4">Años</option>
                 	
                 	
                 	</select>

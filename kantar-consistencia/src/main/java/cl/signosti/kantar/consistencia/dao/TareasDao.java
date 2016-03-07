@@ -44,7 +44,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			pre.setString(1, marca.getNombre());
 			pre.setInt(2, marca.getIdresponsable());
 			pre.setInt(3, marca.getPlazo());
-			pre.setString(4, marca.getTiempo());
+			pre.setInt(4, Integer.parseInt(marca.getTiempo()));
 //			pre.setInt(5, marca.getIdantesesora()); BBM	
 			
 			if(marca.getIdconjunto()==null){
