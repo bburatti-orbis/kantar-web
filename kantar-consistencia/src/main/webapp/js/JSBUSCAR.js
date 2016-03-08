@@ -1,3 +1,15 @@
+
+function doSearchAll() {
+	var tableReg = document.getElementById('polizas');
+	for (var i = 1; i < tableReg.rows.length; i++) {
+		cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+		for (var j = 0; j < cellsOfRow.length; j++) {
+			tableReg.rows[i].style.display = '';
+		}
+	}
+	doSearch();
+	doSearchEstado();
+}
 function doSearch() {
 	var searchText = document.getElementById('busqueda').value.toLowerCase();
 	doBusqueda(searchText);
@@ -25,7 +37,7 @@ function doBusqueda(searchText){
 			}
 		}
 		if (found) {
-			tableReg.rows[i].style.display = '';
+//			tableReg.rows[i].style.display = '';
 		} else {
 			// si no ha encontrado ninguna coincidencia, esconde la // fila de
 			// la tabla
