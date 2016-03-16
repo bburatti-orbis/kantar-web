@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import cl.signosti.kantar.consistencia.dao.AutorizacionesDao;
 import cl.signosti.kantar.consistencia.dao.BasesDao;
 import cl.signosti.kantar.consistencia.dao.CicloDao;
 import cl.signosti.kantar.consistencia.dao.ClienteDao;
@@ -98,6 +99,9 @@ public class LocatorDao implements Serializable {
 	}
 	public static KpiDao getKpi() {
 		return (KpiDao) context.getBean("KpiDao");
+	}
+	public static AutorizacionesDao getAutorizacionesDao() {
+		return (AutorizacionesDao) context.getBean("AutorizacionesDao");
 	}
 
 }

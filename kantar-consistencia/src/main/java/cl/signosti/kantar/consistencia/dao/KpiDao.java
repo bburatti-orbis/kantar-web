@@ -17,7 +17,6 @@ import com.mysql.jdbc.Statement;
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
 import cl.signosti.kantar.consistencia.modelo.AlcancesKpiM;
 import cl.signosti.kantar.consistencia.modelo.Area;
-import cl.signosti.kantar.consistencia.modelo.Bitacora;
 import cl.signosti.kantar.consistencia.modelo.CategoriaKpiM;
 import cl.signosti.kantar.consistencia.modelo.ConexionesM;
 import cl.signosti.kantar.consistencia.modelo.GrillaSemaforo;
@@ -61,7 +60,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 					"	join alcanceskpis akpi on akpi.id = k.AlcancesKPIs_id"+
 					"	join areaskpis ak on ak.id = k.AreasKPIs_id"+
 					"	join categoriaskpis ck on ck.id = k.CategoriasKPIs_id";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -127,7 +126,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		ConexionesM datos = null;
 
 		String sql = "select proyecto_id from proyecto_ejecuciones where estados_ejecucion_id = 2 order by id";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 
 		try {
 			conn = getDataSource().getConnection();
@@ -189,7 +188,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 	
 		//cambiar query para que traiga los paises
 		String sql = "select id, nombre from paises";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -251,7 +250,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 	
 		//cambiar query para que traiga los paises
 		String sql = "select id, glosa from alcanceskpis";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -313,7 +312,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 	
 		//cambiar query para que traiga los paises
 		String sql = "select id, glosa from areaskpis";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -374,7 +373,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		List<CategoriaKpiM> datos = null;
 	
 		String sql = "select id, glosa from categoriaskpis";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -438,7 +437,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 						"from kpiparameters kp "+
 						"join parametros p on p.id = kp.Parametros_id "+
 						"where kp.order in (1,2) order by kp.order";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -506,7 +505,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 					 "join tiposdatos t on t.id = p.TipoDatos "+
 					 "join kpiparameters kp on p.id = kp.Parametros_id "+
 					 "where kp.order not in (1,2) group by p.id;";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -524,7 +523,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 				lt.setIdP(rs.getInt(1));
 				lt.setNombreP(rs.getString(2));
 				lt.setTipoDato(rs.getString(3));
-				System.out.println("tipo dato: "+lt.getDefaultS());
+//				System.out.println("tipo dato: "+lt.getDefaultS());
 				datos.add(lt);
 			}
 	
@@ -567,7 +566,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		List<StoreProcedure> datos = null;
 	
 		String sql = "select id, nombre from sp_interno";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -626,7 +625,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		List<StoreProcedure> datos = null;
 	
 		String sql = "select id, nombre from sp_externo";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -685,7 +684,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		List<Semaforo> datos = null;
 	
 		String sql = "select id, color from semaforos";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -744,7 +743,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		List<OperadorSemaforo> datos = null;
 	
 		String sql = "select id, operador from opers";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -797,7 +796,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 	}
 	
 	public int grabaKpi(KpiM kpi) throws SQLException {
-		System.out.println("[grabaKpi]   metodo con el campo paises");
+//		System.out.println("[grabaKpi]   metodo con el campo paises");
 		int id = 0;
 		Connection conn = null;
 		ResultSet rs = null;
@@ -862,7 +861,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 	}
 	
 	public int grabaKpiSinPais(KpiM kpi) throws SQLException {
-		System.out.println("[grabaKpi2]   metodo sin el campo paises");
+//		System.out.println("[grabaKpi2]   metodo sin el campo paises");
 		int id = 0;
 		Connection conn = null;
 		ResultSet rs = null;
@@ -1107,11 +1106,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 		KpiM datos = new KpiM();
-		System.out.println("edita kpi.. dao");
+//		System.out.println("edita kpi.. dao");
 		String sql = "select k.id, k.glosa, k.InternoExterno, k.Paises_id, k.nombreSP, "+
 						"k.AlcancesKPIs_id, k.AreasKPIs_id, k.CategoriasKPIs_id "+
 						"from kpis k where k.id ="+id;
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -1160,7 +1159,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 				}
 			}
 		}
-		System.out.println("resultados query "+datos.getGlosa());
+//		System.out.println("resultados query "+datos.getGlosa());
 		return datos;
 	}
 	
@@ -1175,7 +1174,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 						"join parametros p on k.Parametros_id = p.id "+
 						"join tiposdatos t on t.id = p.TipoDatos "+
 						"where k.kpis_id = "+id+" order by 'order'";
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -1195,7 +1194,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 				lt.setOrden(rs.getInt(3));
 				lt.setDefaultS(rs.getString(4));
 				lt.setDefaultD(rs.getDouble(5));
-				System.out.println("rs.getInt(6) "+rs.getInt(6));
+//				System.out.println("rs.getInt(6) "+rs.getInt(6));
 				lt.setDefaultI(rs.getInt(6));
 				lt.setParamId(rs.getInt(7));
 				lt.setTipoDato(rs.getString(8));
@@ -1246,7 +1245,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 						"join semaforos s on s.id = k.Semaforos_id "+
 						"join opers o on o.id = k.Opers_id "+
 						"where k.KPIs_id = "+id;
-		 System.out.println(sql);
+//		 System.out.println(sql);
 	
 		try {
 			conn = getDataSource().getConnection();
@@ -1310,7 +1309,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		String sql = "UPDATE kpis SET glosa=?, InternoExterno=?, nombreSp =?, valorTeoricoD=?,  Paises_id=?, CategoriasKPIs_id=?, "+
 					 "AlcancesKPIs_id=?, AreasKPIs_id=?, updated_at= CURRENT_TIMESTAMP()"+
 					 "WHERE id=?";
-		System.out.println("[actualizaKpi] ----> "+sql);
+//		System.out.println("[actualizaKpi] ----> "+sql);
 		try {
 			conn = getDataSource().getConnection();
 			pre = conn.prepareStatement(sql);
@@ -1320,9 +1319,9 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			pre.setDouble(4, 0);
 			if(kpi.getTipo().equals(0)){
 				pre.setNull(5, java.sql.Types.INTEGER);
-				System.out.println("Seteando nulo");
+//				System.out.println("Seteando nulo");
 			}else{
-				System.out.println("Seteando el pais");
+//				System.out.println("Seteando el pais");
 				pre.setInt(5, kpi.getPais());
 			}
 			pre.setInt(6, kpi.getCategoria());

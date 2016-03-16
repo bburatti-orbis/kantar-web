@@ -68,4 +68,7 @@
 	<bean id="KpiDao" class="cl.signosti.kantar.consistencia.dao.KpiDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="AutorizacionesDao" class="cl.signosti.kantar.consistencia.dao.AutorizacionesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 </beans>

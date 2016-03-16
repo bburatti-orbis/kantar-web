@@ -23,11 +23,10 @@
 </head>
 
 <body>
-	<div id="dialog" title="Autorización">
-		<textarea rows="4" cols="50"></textarea><br>
-		<input id="autorizar" name="autorizar" class="boton2" type="submit"
-							value="Autorizar">
+	<div id="dialog">
+		<textarea id="glosa" rows="4" cols="50"></textarea><br>
 	</div>
+
 	<div id="wrap">
 		<header>
 			<div class="logo">

@@ -11,7 +11,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -20,14 +22,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.log4j.Logger;
+
+import cl.signosti.kantar.consistencia.dao.AutorizacionesDao;
 import cl.signosti.kantar.consistencia.dao.EjecucionesDao;
 import cl.signosti.kantar.consistencia.dao.ReportesDao;
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
 import cl.signosti.kantar.consistencia.modelo.DetalleNomesclm;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
+import cl.signosti.kantar.consistencia.modelo.ResultadoAutoriza;
 import cl.signosti.kantar.consistencia.modelo.ResultadoGeneral;
 import cl.signosti.kantar.consistencia.modelo.ResutadoGeneralm;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
+import cl.signosti.kantar.consistencia.utils.GlosaAprobacion;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
 import com.google.gson.Gson;
@@ -35,6 +42,8 @@ import com.sun.jersey.api.view.Viewable;
 
 @Path("/Reportes")
 public class Reportes {
+	
+	private static final Logger log = Logger.getLogger(Reportes.class);
 	
 	@GET
 	@Produces({ MediaType.TEXT_HTML })
@@ -280,4 +289,38 @@ public class Reportes {
 		}
 	}
 
+	@POST
+	@Path("/autoriza")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResultadoAutoriza getAutorizaHistorica(
+			@Context HttpServletRequest req,
+			GlosaAprobacion glosaAprobacion) {
+		ResultadoAutoriza rslt = new ResultadoAutoriza();
+		HttpSession session = req.getSession(true);
+		Usuariom user = (Usuariom) session.getAttribute("user");
+		if(user == null){
+			rslt.set_rslt("ERROR");
+			rslt.set_mensaje("Usuario no conectado");
+			return rslt;
+		}
+		
+		LocatorDao.getInstance();
+		AutorizacionesDao autorizacion = LocatorDao.getAutorizacionesDao();
+		try {
+			int codAutoriza = 0;
+			if("historica".equalsIgnoreCase(glosaAprobacion.getAutoriza())){
+				codAutoriza = 1;
+			}
+			autorizacion.consistencia(glosaAprobacion.getId(), glosaAprobacion.getGlosa(), codAutoriza, user.getId());
+			rslt.set_rslt("OK");
+			rslt.set_mensaje("Aprobacion ingresada");
+		} catch (SQLException e) {
+			log.error("ERROR al ingresar Autorizacion", e);
+			rslt.set_rslt("ERROR");
+			rslt.set_mensaje("ERROR al ingresar Autorizacion");
+		}
+		
+		return rslt;
+	}
 }

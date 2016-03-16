@@ -59,13 +59,18 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				   +"e.created_at AS 'fecha_inicio',"
 				   +"e.fechaTermino AS 'fecha_termino' ,"
 				   +"e.estadoCInterna,"
-				   +"e.estadoCHistorica "
+				   +"e.estadoCHistorica,"
+				   +"e.id, "
+				   +"COALESCE(aI.id, 0) AS 'autorizacionInterna', "
+				   +"COALESCE(aH.id, 0) AS 'autorizacionHistorica' "
 			+"FROM ejecuciones e " 
                  +"LEFT OUTER JOIN bases b ON e.bases_id = b.id "
                  +"LEFT OUTER JOIN paises p ON b.paises_id = p.id "
 				 +"LEFT OUTER JOIN periodos r ON r.id = b.periodos_id "
   				 +"LEFT OUTER JOIN usuarios u ON b.usuarios_id = u.id "
                  +"LEFT OUTER JOIN clientes c ON b.clientes_id = c.id "
+                 +"LEFT OUTER JOIN autorizadas aI ON (aI.Ejecuciones_id = e.id && aI.proceso = 0) "
+                 +"LEFT OUTER JOIN autorizadas aH ON (aH.Ejecuciones_id = e.id && aH.proceso = 1) "
   			+"WHERE e.fechaTermino >= ? && e.fechaTermino <= ? "
             +"ORDER BY e.fechaTermino DESC "
             +"LIMIT ?,?";
@@ -86,6 +91,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			while (rs.next()) {
 				ResutadoGeneralm result = new ResutadoGeneralm();
 
+				result.setId(rs.getString("id"));
 				result.setNombre(rs.getString("nombre"));
 				result.setGlosa(rs.getString("glosa"));
 				result.setDescripcion(rs.getString("descripcion"));
@@ -100,14 +106,24 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				
 				String estadoCI = rs.getString("CI");
 				if(estadoCI.equals("4")){
-					result.setCI("ERRONEA");	
+					int autorizada = rs.getInt("autorizacionInterna");
+					if(autorizada != 0){
+						result.setCI("AUTORIZADA");
+					} else {
+						result.setCI("ERRONEA");
+					}
 				}
 				else{
 					result.setCI("OK");
 				}
 				String estadoCH = rs.getString("CH");
 				if(estadoCH.equals("4")){
-					result.setCH("ERRONEA");	
+					int autorizada = rs.getInt("autorizacionHistorica");
+					if(autorizada != 0){
+						result.setCH("AUTORIZADA");
+					} else {
+						result.setCH("ERRONEA");
+					}
 				}
 				else{
 					result.setCH("OK");

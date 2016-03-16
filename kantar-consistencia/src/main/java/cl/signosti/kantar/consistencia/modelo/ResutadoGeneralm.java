@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class ResutadoGeneralm {
 
+	String id;
 	String nombre;
 	String idBases;
 	String glosa;
@@ -156,6 +157,14 @@ public class ResutadoGeneralm {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	
