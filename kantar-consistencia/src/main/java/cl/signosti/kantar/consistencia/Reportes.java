@@ -350,9 +350,18 @@ public class Reportes {
 		
 		
 		String email = user.getEmai();  //TODO: Se debe buscar otra solucion
+		
+		String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
+				"ruta_informes");
+		
+		String proceso = null;
+		String ejec = null;
+		
 		String emailBody = "Su Base >"+ base.getGlosa() +
 				"< del periodo >"+ ejecucion.getPeriodo() +
-				"< esta disponible para su descarga en: >"+"<";
+				"< esta disponible para su descarga en: "
+				+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
+				+ "&&cod_ejec=" + ejec + "' >haz click aqui</a>";
 
 		new EnvioMail().send(email, emailBody);
 		
