@@ -69,8 +69,8 @@ $(function() {
 									+ value.idBases + "' " + clase + " >"
 									+ value.ci + "</a>";
 							if (errorCI) {
-								list += " <i class='ui-icon ui-icon-check errorCI' data-id='"
-											+ value.id + "'></i>";
+								list += " <a href='#'><i class='ui-icon ui-icon-check errorCI' data-id='"
+											+ value.id + "'></i></a>";
 							}
 							list += "</td>";
 							if (value.ch == "ERRONEA") {
@@ -87,8 +87,8 @@ $(function() {
 								list += "<td> <a href='" + value.link + "' "
 										+ clase + ">" + value.ch + "</a>";
 								if (errorCH) {
-									list += " <i class='ui-icon ui-icon-check errorCH' data-id='"
-											+ value.id + "'></i>";
+									list += " <a href='#'><i class='ui-icon ui-icon-check errorCH' data-id='"
+											+ value.id + "'></i></a>";
 								}
 								list += "</td>";
 							}
@@ -97,7 +97,7 @@ $(function() {
 							list += "<td>" + value.fecha_ter + "</td>";
 							list += "<td><div style='white-space:nowrap;'>" + value.estado;
 							if(value.estado == "TERMINADA" && (value.ci != "ERRONEA" && value.ch != "ERRONEA")){
-								list += "<i class='ui-icon ui-icon-mail-closed'></i>"
+								list += "<a href='#'><i class='ui-icon ui-icon-mail-closed emailTerminada'></i></a>"
 							}
 							list += "</div></td></tr>";
 						});
@@ -213,9 +213,46 @@ $(function() {
 					})
 					.fail(function() {
 						// cry a little
-					});
-			});
+					}
+				);
+			}
+		);
 
+	$("#polizas").on(
+			"click",
+			".emailTerminada",
+			function() {
+				event.preventDefault();
+				$("#glosa").val("");
+				datos.id = $(this).data('id');
+				confirmDialog("Nota e-mail")
+					.done(function() {
+						datos.glosa = $("#glosa").val();
+						datos.autoriza = "emailTerminada";
+						$.ajax({
+							type: "POST",
+							contentType: "application/json; charset=utf-8",
+							url: ruta+ "Reportes/emailTerminada",
+							data: JSON.stringify(
+									datos
+							),
+							dataType: "json",
+							success: function(response){
+								if(response._rslt == "ERROR"){
+									alert(response._mensaje);
+								}else{
+//									actualiza();
+								}
+							}
+						})
+					})
+					.fail(function() {
+						// cry a little
+					}
+				);
+			}
+		);
+	
 	$("#dialog").dialog({
 		modal : true,
 		autoOpen : false,

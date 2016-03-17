@@ -23,6 +23,30 @@ public class EnvioMail {
 		LocatorDao.getInstance();
 		BasesDao bases = LocatorDao.getBasesDao();
 		Basesm base = bases.getbase(cod);
+
+		try {
+			String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
+					"ruta_informes");
+
+			String emailBody = "La base de datos: "
+					+ base.getGlosa().toUpperCase()
+					+ " a terminado </br>"
+					+ " Para descargar el informe ingrese en el siguiente link </br>"
+					+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
+					+ "&&cod_ejec=" + ejec + "' > haz click aqui</a></br> "
+					+ "";
+
+			send(email, emailBody);
+			
+		} catch (Exception e) {
+			 logger.error("Error, causa:" ,e);
+					
+		}
+
+	}
+
+	public void send(String email, String emailBody) {
+		LocatorDao.getInstance();
 		Properties mailServerProperties;
 
 		Session getMailSession;
@@ -37,8 +61,6 @@ public class EnvioMail {
 					.recuperaValor("Password");
 			String servidor_smtp = PropertiesUtil.getInstance().recuperaValor(
 					"Servidor_SMTP");
-			String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
-					"ruta_informes");
 			// Step1
 
 			mailServerProperties = System.getProperties();
@@ -54,13 +76,6 @@ public class EnvioMail {
 			generateMailMessage = new MimeMessage(getMailSession);
 			generateMailMessage.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(email));
-			String emailBody = "La base de datos: "
-					+ base.getGlosa().toUpperCase()
-					+ " a terminado </br>"
-					+ " Para descargar el informe ingrese en el siguiente link </br>"
-					+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
-					+ "&&cod_ejec=" + ejec + "' > haz click aqui</a></br> "
-					+ "";
 
 			generateMailMessage.setText(emailBody, "UTF-8", "html");
 
@@ -76,9 +91,6 @@ public class EnvioMail {
 			transport.close();
 		} catch (Exception e) {
 			 logger.error("Error, causa:" ,e);
-					
 		}
-
 	}
-
 }

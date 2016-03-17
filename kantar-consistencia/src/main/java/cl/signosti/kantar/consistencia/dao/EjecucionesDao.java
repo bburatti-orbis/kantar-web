@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -284,6 +285,45 @@ public class EjecucionesDao extends JdbcDaoSupport implements Serializable {
 
 		}
 
+	}
+	
+	public Ejecucionesm getEjecucion(int id) throws SQLException{
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pre = null;
+		String sql = "SELECT *FROM Ejecuciones WHERE id=?";
+
+		try {
+			conn = getDataSource().getConnection();
+			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre.setInt(1, id);
+			
+			rs = pre.executeQuery();
+			if(rs.next()){
+				Ejecucionesm ejecucion = new Ejecucionesm();
+				ejecucion.setBase(rs.getInt("Bases_id"));
+				ejecucion.setCH(rs.getInt("estadoCHistorica"));
+				ejecucion.setCI(rs.getInt("estadoCInterna"));
+//				ejecucion.setCod(cod);
+				ejecucion.setFecha(new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("fecha")));
+				ejecucion.setPeriodo(rs.getString("periodo"));
+//				ejecucion.setProceso(proceso);
+				
+				return ejecucion;
+			} else {
+				throw new SQLException("No existe la ejecucion solicitada");
+			}
+		} finally {
+			if (rs != null){
+				rs.close();
+			}
+			if (pre != null){
+				pre.close();
+			}
+			if (conn != null){
+				conn.close();
+			}
+		}
 	}
 
 }

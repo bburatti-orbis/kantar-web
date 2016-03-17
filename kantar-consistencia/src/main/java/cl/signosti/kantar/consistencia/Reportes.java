@@ -25,15 +25,19 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.log4j.Logger;
 
 import cl.signosti.kantar.consistencia.dao.AutorizacionesDao;
+import cl.signosti.kantar.consistencia.dao.BasesDao;
 import cl.signosti.kantar.consistencia.dao.EjecucionesDao;
 import cl.signosti.kantar.consistencia.dao.ReportesDao;
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
+import cl.signosti.kantar.consistencia.modelo.Basesm;
 import cl.signosti.kantar.consistencia.modelo.DetalleNomesclm;
+import cl.signosti.kantar.consistencia.modelo.Ejecucionesm;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
-import cl.signosti.kantar.consistencia.modelo.ResultadoAutoriza;
+import cl.signosti.kantar.consistencia.modelo.Resultado;
 import cl.signosti.kantar.consistencia.modelo.ResultadoGeneral;
 import cl.signosti.kantar.consistencia.modelo.ResutadoGeneralm;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
+import cl.signosti.kantar.consistencia.utils.EnvioMail;
 import cl.signosti.kantar.consistencia.utils.GlosaAprobacion;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
@@ -293,16 +297,14 @@ public class Reportes {
 	@Path("/autoriza")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResultadoAutoriza getAutorizaHistorica(
+	public Resultado getAutorizaHistorica(
 			@Context HttpServletRequest req,
 			GlosaAprobacion glosaAprobacion) {
-		ResultadoAutoriza rslt = new ResultadoAutoriza();
+		Resultado rslt = null;
 		HttpSession session = req.getSession(true);
 		Usuariom user = (Usuariom) session.getAttribute("user");
 		if(user == null){
-			rslt.set_rslt("ERROR");
-			rslt.set_mensaje("Usuario no conectado");
-			return rslt;
+			return new Resultado(101, "Usuario no conectado");
 		}
 		
 		LocatorDao.getInstance();
@@ -313,14 +315,47 @@ public class Reportes {
 				codAutoriza = 1;
 			}
 			autorizacion.consistencia(glosaAprobacion.getId(), glosaAprobacion.getGlosa(), codAutoriza, user.getId());
-			rslt.set_rslt("OK");
-			rslt.set_mensaje("Aprobacion ingresada");
+			rslt = new Resultado("Aprobacion ingresada");
 		} catch (SQLException e) {
 			log.error("ERROR al ingresar Autorizacion", e);
-			rslt.set_rslt("ERROR");
-			rslt.set_mensaje("ERROR al ingresar Autorizacion");
+			rslt = new Resultado(102, "ERROR al ingresar Autorizacion");
 		}
 		
 		return rslt;
+	}
+	
+	@POST
+	@Path("/emailTerminada")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Resultado getEmailTerminada(
+			@Context HttpServletRequest req,
+			GlosaAprobacion glosaAprobacion) {
+		HttpSession session = req.getSession(true);
+		Usuariom user = (Usuariom) session.getAttribute("user");
+		if(user == null){
+			return new Resultado(101, "Usuario no conectado");
+		}
+		
+		EjecucionesDao ejecucionesDao = new EjecucionesDao();
+		BasesDao basesDao = new BasesDao();
+		Ejecucionesm ejecucion = null;
+		Basesm base = null;
+		try{
+			ejecucion = ejecucionesDao.getEjecucion(glosaAprobacion.getId());
+			base = basesDao.getbase(ejecucion.getBase());
+		} catch (Exception e) {
+			return new Resultado(201, "Error no existe Base de Datos");
+		}
+		
+		
+		String email = user.getEmai();  //TODO: Se debe buscar otra solucion
+		String emailBody = "Su Base >"+ base.getGlosa() +
+				"< del periodo >"+ ejecucion.getPeriodo() +
+				"< esta disponible para su descarga en: >"+"<";
+
+		new EnvioMail().send(email, emailBody);
+		
+		return new Resultado("Email enviado");
 	}
 }
