@@ -66,8 +66,8 @@ th{
 		 <thead>
 		  <tr>
 		   <th>Proyecto</th>
-		   <th>Pa&iacutes</th>
-		   <th>&Aacuterea</th>
+		   <th>Pa&iacute;s</th>
+		   <th>&Aacute;rea</th>
 		   <th>Ejecutivo</th>
 		   <th>Tareas realizadas</th>
 		   <th>Tareas totales por proyecto</th>
