@@ -31,7 +31,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			subtareas(marca);
 		}
 		else{
-		String sql = "Insert into Tareas (nombre,idresponsable,plazo,tiempo,idconjunto,tipo_calendario,proyecto_id,Estados_id,frecuencia,delay,tiempoDelay,Tiempofrecuencia) values (?,?,?,?,?,?,?,1,?,?,?,?)";
+		String sql = "Insert into Tareas (nombre,idresponsable,plazo,tiempo,idconjunto,tipo_calendario,proyecto_id,Estados_id,frecuencia,delay,tiempoDelay,Tiempofrecuencia) values (?,?,?,?,?,?,?,6,?,?,?,?)";
 
 		Connection conn = null;
 		ResultSet rs = null;
