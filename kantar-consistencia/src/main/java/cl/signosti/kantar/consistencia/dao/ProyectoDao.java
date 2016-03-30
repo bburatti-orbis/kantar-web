@@ -38,8 +38,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 			pre.setInt(4,proyec.getId_ciclo());
 			pre.setString(2, proyec.getCalendario());
 			pre.setInt(3,Integer.parseInt(proyec.getId_paises()));
-//			pre.setInt(5, 3);
-			pre.setInt(5, 1);  // Corrección del 29/03/2016
+			pre.setInt(5, 3);
 			
 			pre.executeUpdate();
 			rs = pre.getGeneratedKeys();
