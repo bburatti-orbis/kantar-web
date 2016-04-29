@@ -291,7 +291,7 @@ public class EjecucionesDao extends JdbcDaoSupport implements Serializable {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement pre = null;
-		String sql = "SELECT *FROM Ejecuciones WHERE id=?";
+		String sql = "SELECT e.*, p.periodo FROM ejecuciones e, bases b, periodos p WHERE e.id=? AND b.id=e.bases_id AND p.id=b.periodos_id";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -313,6 +313,9 @@ public class EjecucionesDao extends JdbcDaoSupport implements Serializable {
 			} else {
 				throw new SQLException("No existe la ejecucion solicitada");
 			}
+		} catch (SQLException e){
+			logger.error("Error de acceso a  Base de Datos", e);
+			throw new SQLException(e);
 		} finally {
 			if (rs != null){
 				rs.close();

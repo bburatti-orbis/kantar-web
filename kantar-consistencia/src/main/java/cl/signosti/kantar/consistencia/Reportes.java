@@ -24,14 +24,20 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+import com.sun.jersey.api.view.Viewable;
+
 import cl.signosti.kantar.consistencia.dao.AutorizacionesDao;
 import cl.signosti.kantar.consistencia.dao.BasesDao;
 import cl.signosti.kantar.consistencia.dao.EjecucionesDao;
+import cl.signosti.kantar.consistencia.dao.PaisesDao;
 import cl.signosti.kantar.consistencia.dao.ReportesDao;
+import cl.signosti.kantar.consistencia.dao.UsuariosDao;
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
 import cl.signosti.kantar.consistencia.modelo.Basesm;
 import cl.signosti.kantar.consistencia.modelo.DetalleNomesclm;
 import cl.signosti.kantar.consistencia.modelo.Ejecucionesm;
+import cl.signosti.kantar.consistencia.modelo.Paisesm;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
 import cl.signosti.kantar.consistencia.modelo.Resultado;
 import cl.signosti.kantar.consistencia.modelo.ResultadoGeneral;
@@ -41,14 +47,11 @@ import cl.signosti.kantar.consistencia.utils.EnvioMail;
 import cl.signosti.kantar.consistencia.utils.GlosaAprobacion;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
-import com.google.gson.Gson;
-import com.sun.jersey.api.view.Viewable;
-
 @Path("/Reportes")
 public class Reportes {
-	
+
 	private static final Logger log = Logger.getLogger(Reportes.class);
-	
+
 	@GET
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getIt(@Context HttpServletRequest req) {
@@ -72,47 +75,45 @@ public class Reportes {
 	@GET
 	@Path("Report/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResultadoGeneral getreportg(@QueryParam("inc") int inc, 
-			@QueryParam("limit") int limit,
-			@QueryParam("desde") String desde,
-			@QueryParam("hasta") String hasta) {
+	public ResultadoGeneral getreportg(@QueryParam("inc") int inc, @QueryParam("limit") int limit,
+			@QueryParam("desde") String desde, @QueryParam("hasta") String hasta) {
 
-		if(inc <= 0 || limit <= 0){
+		if (inc <= 0 || limit <= 0) {
 			inc = 0;
 			limit = 100;
 		}
 		Date date = Calendar.getInstance().getTime();
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");	
-		if(desde == null || desde.length() < 8){				    
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		if (desde == null || desde.length() < 8) {
 			desde = sdf.format(date);
 		}
-		if(hasta == null || hasta.length() < 8){
+		if (hasta == null || hasta.length() < 8) {
 			hasta = sdf.format(date);
 		}
 		sdf.setLenient(false);
-		try{
+		try {
 			Date f1 = sdf.parse(desde);
 			Date f2 = sdf.parse(hasta);
-			if(f2.getTime() < f1.getTime()){
+			if (f2.getTime() < f1.getTime()) {
 				hasta = desde;
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			desde = sdf.format(date);
 			hasta = sdf.format(date);
 		}
-		
+
 		LocatorDao.getInstance();
 		ReportesDao report = LocatorDao.getReportesDao();
 		Map<Integer, ResutadoGeneralm> lista = new HashMap<Integer, ResutadoGeneralm>();
 		ResultadoGeneral rslt = new ResultadoGeneral();
-		
+
 		lista = report.getResultGeneral(inc, limit, desde, hasta);
 		rslt.setLista(lista);
 		rslt.setInc(inc);
 		rslt.setLimit(limit);
 		rslt.setDesde(desde);
 		rslt.setHasta(hasta);
-		
+
 		return rslt;
 
 	}
@@ -136,8 +137,7 @@ public class Reportes {
 	@GET
 	@Path("/nomenclatura")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response getnomenclatura(@QueryParam("codigo") String codigo)
-			throws SQLException {
+	public Response getnomenclatura(@QueryParam("codigo") String codigo) throws SQLException {
 
 		return Response.ok(new Viewable("/views/vistanomenclaturas")).build();
 
@@ -146,8 +146,7 @@ public class Reportes {
 	@GET
 	@Path("/nomenclatura/nomenc")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response getnomenclaturalista(@QueryParam("codigo") int codigo)
-			throws SQLException {
+	public Response getnomenclaturalista(@QueryParam("codigo") int codigo) throws SQLException {
 
 		LocatorDao.getInstance();
 		int c = codigo;
@@ -165,8 +164,7 @@ public class Reportes {
 	@GET
 	@Path("/nomenclatura/detallenomenc")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<Integer, DetalleNomesclm> getdetallenomenc(@QueryParam("codigo") int codigo)
-			throws SQLException {
+	public Map<Integer, DetalleNomesclm> getdetallenomenc(@QueryParam("codigo") int codigo) throws SQLException {
 
 		LocatorDao.getInstance();
 		int c = codigo;
@@ -181,8 +179,7 @@ public class Reportes {
 	@GET
 	@Path("/detallenom")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response getdetallenom(@QueryParam("codigo") String codigo)
-			throws SQLException {
+	public Response getdetallenom(@QueryParam("codigo") String codigo) throws SQLException {
 
 		return Response.ok(new Viewable("/views/lineanomesclatura")).build();
 
@@ -191,20 +188,17 @@ public class Reportes {
 	@GET
 	@Path("/descexcel")
 	@Produces("application/vnd.ms-excel")
-	public Response getdescexcel(@QueryParam("ruta") String ruta) throws SQLException,
-			IOException {	
-		
-		String consistencias=PropertiesUtil.getInstance().recuperaValor("consistencias");
-		
-		File objFile = new File(consistencias+ruta);
+	public Response getdescexcel(@QueryParam("ruta") String ruta) throws SQLException, IOException {
+
+		String consistencias = PropertiesUtil.getInstance().recuperaValor("consistencias");
+
+		File objFile = new File(consistencias + ruta);
 		ResponseBuilder response = Response.ok((Object) objFile);
-		response.header("Content-Disposition", "attachment; filename="
-				+ objFile.getName());
+		response.header("Content-Disposition", "attachment; filename=" + objFile.getName());
 		return response.build();
 
 	}
-	
-	
+
 	@GET
 	@Path("/gest_proyec")
 	@Produces({ MediaType.TEXT_HTML })
@@ -226,7 +220,7 @@ public class Reportes {
 		}
 
 	}
-	
+
 	@GET
 	@Path("/revisarProyecto")
 	@Produces({ MediaType.TEXT_HTML })
@@ -236,7 +230,7 @@ public class Reportes {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Usuariom user = (Usuariom)session.getAttribute("user");
+		Usuariom user = (Usuariom) session.getAttribute("user");
 		if (user == null) {
 			map.put("cod", 1);
 
@@ -247,7 +241,7 @@ public class Reportes {
 			return Response.ok(new Viewable("/views/reportes/listarProyectos")).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/perforEjecutivo")
 	@Produces({ MediaType.TEXT_HTML })
@@ -257,7 +251,7 @@ public class Reportes {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Usuariom user = (Usuariom)session.getAttribute("user");
+		Usuariom user = (Usuariom) session.getAttribute("user");
 		if (user == null) {
 			map.put("cod", 1);
 
@@ -268,7 +262,7 @@ public class Reportes {
 			return Response.ok(new Viewable("/views/reportes/reportePerformance")).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/reporteRevisarProyecto")
 	@Produces({ MediaType.TEXT_HTML })
@@ -278,10 +272,10 @@ public class Reportes {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Usuariom user = (Usuariom)session.getAttribute("user");
-		
+		Usuariom user = (Usuariom) session.getAttribute("user");
+
 		String idEjecu = req.getParameter("i");
-		
+
 		if (user == null) {
 			map.put("cod", 1);
 
@@ -297,21 +291,19 @@ public class Reportes {
 	@Path("/autoriza")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Resultado getAutorizaHistorica(
-			@Context HttpServletRequest req,
-			GlosaAprobacion glosaAprobacion) {
+	public Resultado getAutorizaHistorica(@Context HttpServletRequest req, GlosaAprobacion glosaAprobacion) {
 		Resultado rslt = null;
 		HttpSession session = req.getSession(true);
 		Usuariom user = (Usuariom) session.getAttribute("user");
-		if(user == null){
+		if (user == null) {
 			return new Resultado(101, "Usuario no conectado");
 		}
-		
+
 		LocatorDao.getInstance();
 		AutorizacionesDao autorizacion = LocatorDao.getAutorizacionesDao();
 		try {
 			int codAutoriza = 0;
-			if("historica".equalsIgnoreCase(glosaAprobacion.getAutoriza())){
+			if ("historica".equalsIgnoreCase(glosaAprobacion.getAutoriza())) {
 				codAutoriza = 1;
 			}
 			autorizacion.consistencia(glosaAprobacion.getId(), glosaAprobacion.getGlosa(), codAutoriza, user.getId());
@@ -320,50 +312,71 @@ public class Reportes {
 			log.error("ERROR al ingresar Autorizacion", e);
 			rslt = new Resultado(102, "ERROR al ingresar Autorizacion");
 		}
-		
+
 		return rslt;
 	}
-	
+
 	@POST
 	@Path("/emailTerminada")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Resultado getEmailTerminada(
-			@Context HttpServletRequest req,
-			GlosaAprobacion glosaAprobacion) {
+	public Resultado getEmailTerminada(@Context HttpServletRequest req, GlosaAprobacion glosaAprobacion) {
 		HttpSession session = req.getSession(true);
 		Usuariom user = (Usuariom) session.getAttribute("user");
-		if(user == null){
+		if (user == null) {
 			return new Resultado(101, "Usuario no conectado");
 		}
-		
-		EjecucionesDao ejecucionesDao = new EjecucionesDao();
-		BasesDao basesDao = new BasesDao();
+
+		EjecucionesDao ejecucionesDao = LocatorDao.getEjecucionesDao();
+		PaisesDao paisesDao = LocatorDao.getPaisesDao();
+		UsuariosDao usuariosDao = LocatorDao.getusuariodao();
+		BasesDao basesDao = LocatorDao.getBasesDao();
+
 		Ejecucionesm ejecucion = null;
 		Basesm base = null;
-		try{
+		Paisesm pais = null;
+		Usuariom supervisor = null;
+		
+		String email = user.getEmail();
+
+		try {
 			ejecucion = ejecucionesDao.getEjecucion(glosaAprobacion.getId());
-			base = basesDao.getbase(ejecucion.getBase());
+			base = basesDao.getBase(ejecucion.getBase());
+			pais = paisesDao.getPais(base.getPaisid());
+			supervisor = usuariosDao.getUsuario(pais.getIdSupervisor());
+			
+			/* Regla para obtener el correo:
+			 * 
+			 * 		1.- Se usa como destino el correo del usuario supervisor de la Base, sino
+			 * 
+			 * 		2.- El correo del usuario supervisor del país, sino
+			 * 
+			 * 		3.- El correo del usuario conectado en la sesion.
+			 * 
+			 */
+			if (base.getCorreo() != null && base.getCorreo().length() > 0) {
+				email = base.getCorreo();
+			} else {
+				if (supervisor != null && supervisor.getEmail() != null && supervisor.getEmail().length() > 0) {
+					email = supervisor.getEmail();
+				}
+			}
 		} catch (Exception e) {
-			return new Resultado(201, "Error no existe Base de Datos");
+			return new Resultado(201, "Ejecución o Base de Datos no existe");
 		}
-		
-		
-		String email = user.getEmai();  //TODO: Se debe buscar otra solucion
-		
-		String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
-				"ruta_informes");
-		
-		String proceso = null;
-		String ejec = null;
-		
-		String emailBody = "Su Base >"+ base.getGlosa() +
-				"< del periodo >"+ ejecucion.getPeriodo() +
-				"< esta disponible para su descarga en: "
-				+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
-				+ "&&cod_ejec=" + ejec + "' >haz click aqui</a>";
+
+		String ruta_informes = PropertiesUtil.getInstance().recuperaValor("ruta_informes");
+		String ruta = pais.getNombre() + 
+				"/" + ejecucion.getPeriodo() + 
+				"/" + base.getGlosa() +
+				"/" + base.getGlosa() + ".xlsx";
+
+		String emailBody = "Su Base >" + base.getGlosa() + "< del período >" + ejecucion.getPeriodo()
+				+ "< está disponible para su descarga en: " + " <a href='" + ruta_informes + "?ruta=" + ruta + "' >haz click aquí</a>";
 
 		new EnvioMail().send(email, emailBody);
+
+		log.info("Se envio un email a >"+email+"< con mensaje >"+ emailBody +"<");
 		
 		return new Resultado("Email enviado");
 	}

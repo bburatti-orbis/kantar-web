@@ -308,7 +308,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			while (rs.next()) {
 				DetalleNomesclm result = new DetalleNomesclm();
 
-				
+				result.setGlosa(rs.getString("glosa"));
 				result.setNivel(rs.getString("nivel"));
 				String n=fun.repeat(" ",rs.getInt("nivel"));
 				result.setLinea(n+rs.getString("linea"));
