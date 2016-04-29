@@ -22,7 +22,7 @@ public class EnvioMail {
 			throws SQLException {
 		LocatorDao.getInstance();
 		BasesDao bases = LocatorDao.getBasesDao();
-		Basesm base = bases.getbase(cod);
+		Basesm base = bases.getBase(cod);
 
 		try {
 			String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
@@ -45,7 +45,7 @@ public class EnvioMail {
 
 	}
 
-	public void send(String email, String emailBody) {
+	public String send(String email, String emailBody) {
 		LocatorDao.getInstance();
 		Properties mailServerProperties;
 
@@ -67,6 +67,8 @@ public class EnvioMail {
 			mailServerProperties.put("mail.smtp.port", puerto);
 			mailServerProperties.put("mail.smtp.auth", "true");
 			mailServerProperties.put("mail.smtp.starttls.enable", "true");
+			mailServerProperties.put("mail.smtp.ssl.enable", "true");
+			
 
 			// Step2
 
@@ -74,6 +76,7 @@ public class EnvioMail {
 					null);
 			getMailSession.setDebug(true);
 			generateMailMessage = new MimeMessage(getMailSession);
+			generateMailMessage.setFrom(new InternetAddress(correo));
 			generateMailMessage.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(email));
 
@@ -91,6 +94,9 @@ public class EnvioMail {
 			transport.close();
 		} catch (Exception e) {
 			 logger.error("Error, causa:" ,e);
-		}
+			 return e.getMessage();
+		} 
+		
+		return null;
 	}
 }
