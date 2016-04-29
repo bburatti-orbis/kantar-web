@@ -349,5 +349,55 @@ public class PaisesDao extends JdbcDaoSupport {
 
 	}
 	
-
+	public Paisesm getPais(int idPais){
+		Paisesm pais = null;
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pre = null;
+		
+		String sql = "SELECT * FROM paises WHERE id=?";
+		
+		try {
+			conn = getDataSource().getConnection();
+			pre = conn.prepareStatement(sql);
+			pre.setInt(1, idPais);
+			rs = pre.executeQuery();
+			if (rs.next()){
+				pais = new Paisesm();
+				pais.setEstado(rs.getString("estados_id"));
+				pais.setId(rs.getInt("id"));
+				pais.setIdSupervisor(rs.getInt("idSupervisor"));
+				pais.setNombre(rs.getString("nombre"));
+				pais.setRuta(rs.getString("rutaPais"));
+			}
+		} catch (Exception e) {
+			 logger.error("Error, causa:" , e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					 logger.error("Error, causa:" ,
+					 e);
+				}
+			}
+			if (pre != null) {
+				try {
+					pre.close();
+				} catch (SQLException e) {
+					 logger.error("Error, causa:" ,
+					 e);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					 logger.error("Error, causa:" ,
+					 e);
+				}
+			}
+		}
+		return pais;
+	}
 }
