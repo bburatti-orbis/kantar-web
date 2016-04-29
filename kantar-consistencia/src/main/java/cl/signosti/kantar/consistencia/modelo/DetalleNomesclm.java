@@ -11,6 +11,7 @@ public class DetalleNomesclm {
 	String fecha;
 	String base;
 	String pais;
+	String glosa;
 
 	public String getLinea() {
 		return linea;
@@ -90,6 +91,14 @@ public class DetalleNomesclm {
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+
+	public String getGlosa() {
+		return glosa;
+	}
+
+	public void setGlosa(String glosa) {
+		this.glosa = glosa;
 	}
 
 }

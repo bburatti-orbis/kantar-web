@@ -37,7 +37,7 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 			while (rs.next()) {
 
 				entidad.setId(rs.getInt("id"));
-				entidad.setEmai(rs.getString("email"));
+				entidad.setEmail(rs.getString("email"));
 				entidad.setPassword("password");
 				entidad.setNombre(rs.getString("nombre"));
 				entidad.setApellido(rs.getString("apellido"));
@@ -94,7 +94,7 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 			while (rs.next()) {
 				Usuariom entidad = new Usuariom();
 				entidad.setId(rs.getInt("id"));
-				entidad.setEmai(rs.getString("email"));
+				entidad.setEmail(rs.getString("email"));
 				entidad.setPassword("password");
 				entidad.setNombre(rs.getString("nombre"));
 				entidad.setApellido(rs.getString("apellido"));
@@ -136,7 +136,7 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 	
 
 	
-	public Usuariom getUsuario(int idresponsable) {
+	public Usuariom getUsuario(int idUsuario) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement pre = null;
@@ -149,14 +149,14 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 			conn = getDataSource().getConnection();
 			
 			pre = conn.prepareStatement(sql);
-			pre.setInt(1, idresponsable);
+			pre.setInt(1, idUsuario);
 			
 			rs = pre.executeQuery();
 
 			while (rs.next()) {
 
 				entidad.setId(rs.getInt("id"));
-				entidad.setEmai(rs.getString("email"));
+				entidad.setEmail(rs.getString("email"));
 				entidad.setPassword("password");
 				entidad.setNombre(rs.getString("nombre"));
 				entidad.setApellido(rs.getString("apellido"));
@@ -213,7 +213,7 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 			while (rs.next()) {
 				Usuariom entidad = new Usuariom();
 				entidad.setId(rs.getInt("id"));
-				entidad.setEmai(rs.getString("email"));
+				entidad.setEmail(rs.getString("email"));
 				entidad.setPassword("password");
 				entidad.setNombre(rs.getString("nombre"));
 				entidad.setApellido(rs.getString("apellido"));
