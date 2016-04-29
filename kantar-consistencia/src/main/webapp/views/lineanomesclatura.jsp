@@ -69,7 +69,7 @@
                 <thead>          
                   <tr>
                   	<th scope="col">Linea</th>
-                    <th scope="col">Nomenclatura</th>
+                    <th scope="col">Glosa</th>
                     <th scope="col">Nivel</th>
                     <th scope="col">Total Informado</th>
                     <th scope="col">Total Calculado</th>

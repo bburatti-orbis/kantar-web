@@ -97,7 +97,7 @@ $(function() {
 							list += "<td>" + value.fecha_ter + "</td>";
 							list += "<td><div style='white-space:nowrap;'>" + value.estado;
 							if(value.estado == "TERMINADA" && (value.ci != "ERRONEA" && value.ch != "ERRONEA")){
-								list += "<a href='#'><i class='ui-icon ui-icon-mail-closed emailTerminada'></i></a>"
+								list += "<a href='#'><i class='ui-icon ui-icon-mail-closed emailTerminada' data-id='"+value.id+"'></i></a>"
 							}
 							list += "</div></td></tr>";
 						});

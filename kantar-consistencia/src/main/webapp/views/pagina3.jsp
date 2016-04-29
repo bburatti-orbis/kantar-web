@@ -85,7 +85,7 @@
 						</p>
 					</div>
 				</div>
-				<div style="">
+				<div class="control_filtro">
 					<input id="actualiza" class="boton2" type="submit"
 						value="Actualizar">
 				</div>
