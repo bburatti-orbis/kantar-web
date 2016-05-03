@@ -42,4 +42,9 @@
 <!-- 			<li><a href="#" >Monitoreo</a></li> -->
 		</ul>
 	</li>
+	<li><a href="#" id="motor_manual">Motor Manual</a>
+		<ul>
+<!-- 			<li><a href="#" >Monitoreo</a></li> -->
+		</ul>
+	</li>
 </ul>

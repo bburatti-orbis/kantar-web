@@ -18,10 +18,16 @@ import cl.signosti.kantar.consistencia.modelo.ReportePerformance;
 import cl.signosti.kantar.consistencia.modelo.ReportesRevisarProyecto;
 import cl.signosti.kantar.consistencia.modelo.Tareasm;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
+import cl.signosti.kantar.consistencia.motorSeguimiento.Motor;
 
 public class KantarDWR {
 	
 	private static final Logger log = Logger.getLogger(KantarDWR.class);
+	
+	public String flujo1DWR(){
+		try{(new Motor()).flujo1();}catch(Exception e){e.printStackTrace();return "ERROR";}
+		return "OK";
+	}
 	
 	public Tareasm[] getEjecutarProyectoXUserAndProyecto(int idUser, int proyectoId, String inicio, String fin){
 		

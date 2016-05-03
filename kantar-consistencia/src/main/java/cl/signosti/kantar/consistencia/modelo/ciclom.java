@@ -1,5 +1,6 @@
 package cl.signosti.kantar.consistencia.modelo;
 
+import java.util.Calendar;
 
 public class ciclom {
 	int id;
@@ -11,7 +12,16 @@ public class ciclom {
 	String repetirhasta;
 	int repetirel;
 	String fechater;
+	private Calendar repetirhastaC;
 	
+	
+	
+	public Calendar getRepetirhastaC() {
+		return repetirhastaC;
+	}
+	public void setRepetirhastaC(Calendar repetirhastaC) {
+		this.repetirhastaC = repetirhastaC;
+	}
 	public int getSe_repite() {
 		return se_repite;
 	}

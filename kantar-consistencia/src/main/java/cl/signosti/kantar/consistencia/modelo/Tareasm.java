@@ -36,6 +36,26 @@ public class Tareasm {
 	private Date inicioEstimadoD;
 	private Date finEstimadoD;
 	
+//	t.setTiempoInt(rs.getInt("tiempo"));
+	private int tiempoInt;
+//	t.setTiposTareasId(rs.getInt("TiposTareas_id"));
+	private int tiposTareasId;
+	
+	
+	
+	
+	public int getTiempoInt() {
+		return tiempoInt;
+	}
+	public void setTiempoInt(int tiempoInt) {
+		this.tiempoInt = tiempoInt;
+	}
+	public int getTiposTareasId() {
+		return tiposTareasId;
+	}
+	public void setTiposTareasId(int tiposTareasId) {
+		this.tiposTareasId = tiposTareasId;
+	}
 	public Date getInicioEstimadoD() {
 		return inicioEstimadoD;
 	}
