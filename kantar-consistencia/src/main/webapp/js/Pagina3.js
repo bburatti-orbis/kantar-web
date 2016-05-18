@@ -21,10 +21,10 @@ $(function() {
 		if (window.dattabla != null) {
 			window.dattabla.desde = $("#desde").val().substr(6, 4)
 					+ $("#desde").val().substr(3, 2)
-					+ $("#desde").val().substr(0, 2);
+					+ $("#desde").val().substr(0, 2) + " 00:00:00";
 			window.dattabla.hasta = $("#hasta").val().substr(6, 4)
 					+ $("#hasta").val().substr(3, 2)
-					+ $("#hasta").val().substr(0, 2);
+					+ $("#hasta").val().substr(0, 2) + " 23:59:59";
 			url = ruta + "Reportes/Report?inc=" + dattabla.inc + "&limit="
 					+ dattabla.limit + "&desde=" + window.dattabla.desde
 					+ "&hasta=" + window.dattabla.hasta;
@@ -51,46 +51,44 @@ $(function() {
 							errorCI = false;
 							errorCH = false;
 							list += "<tr class='alternar' >";
-							list += "<td>" + value.nombre + "</td>";
+							list += "<td>" + value.pais + "</td>";
+							list += "<td>" + value.periodo + "</td>";
 							list += "<td>" + value.glosa + "</td>";
 							list += "<td>" + value.descripcion + "</td>";
 							list += "<td>" + value.cliente + "</td>";
-							list += "<td>" + value.usuario + "</td>";
-							list += "<td>" + value.periodo + "</td>";
-							if (value.ci == "ERRONEA") {
-								clase = "class='error'";
-								errorCI = true;
+							list += "<td>" + value.ejecutivo + "</td>";							
+							
+							
+							clase = (value.estadoCI == "ERRONEA"?"class='error'":"class='ok'");
+							if (value.estadoCI == "AUTORIZADA" || value.estadoCI == "ERRONEA") {
+								list += "<td><a href='" + ruta
+										+ "Reportes/nomenclatura?codigo="
+										+ value.idBases + "' " + clase + " >"
+										+ value.estadoCI + "</a>";
+								if (value.estadoCI == "ERRONEA") {
+									list += " <a href='#'><i class='ui-icon ui-icon-check errorCI' data-id='"
+												+ value.id + "'></i></a>";
+								}
+								list += "</td>";
 							} else {
-								clase = "class='ok'";
+								list += "<td>"+ value.estadoCI +"</td>";
 							}
 
-							list += "<td><a href='" + ruta
-									+ "Reportes/nomenclatura?codigo="
-									+ value.idBases + "' " + clase + " >"
-									+ value.ci + "</a>";
-							if (errorCI) {
-								list += " <a href='#'><i class='ui-icon ui-icon-check errorCI' data-id='"
-											+ value.id + "'></i></a>";
-							}
-							list += "</td>";
-							if (value.ch == "ERRONEA") {
-								clase = "class='error'";
-								errorCH = true;
-							} else {
-								clase = "class='ok'";
-							}
-
-							if (value.ch == "NO APLICA") {
-								list += "<td> <a  " + clase + ">" + value.ch
-										+ "</a></td>";
-							} else {
-								list += "<td> <a href='" + value.link + "' "
-										+ clase + ">" + value.ch + "</a>";
+							if (value.estadoCH == "AUTORIZADA" || value.estadoCH == "ERRONEA") {
+								if (value.estadoCH == "ERRONEA") {
+									clase = "class='error'";
+									errorCH = true;
+								} else {
+									clase = "class='ok'";
+								}
+								list += "<td> <a href='" + value.link + "' " + clase + ">" + value.estadoCH + "</a>";
 								if (errorCH) {
 									list += " <a href='#'><i class='ui-icon ui-icon-check errorCH' data-id='"
 											+ value.id + "'></i></a>";
 								}
 								list += "</td>";
+							} else {
+								list += "<td>" + value.estadoCH + "</td>";
 							}
 
 							list += "<td>" + value.fecha_ini + "</td>";

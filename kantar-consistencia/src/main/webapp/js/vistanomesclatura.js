@@ -16,12 +16,14 @@ $(function() {
 		var list="";
 		var error="";
 		var pais="";
+		var periodo="";
 		var base="";
 		var fecha="";
 		var clase="";
 		var hola = "linea";
 		$.each(dattabla, function(index, value) {
 			pais=value.pais;
+			periodo=value.periodo;
 			base=value.base;
 			fecha=value.fecha;
 			list += "<tr class='alternar'>";
@@ -48,6 +50,7 @@ $(function() {
 		$("#polizas").find('tbody').html(list);
 		$("#fecha").html(fecha);
 		$("#pais").html(pais);
+		$('#periodo').html(periodo);
 		$("#base").html(base);
 	}
 	

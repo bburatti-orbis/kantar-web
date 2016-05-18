@@ -104,11 +104,11 @@
 					<thead>
 						<tr>
 							<th scope="col">País</th>
+							<th scope="col">Período</th>
 							<th scope="col">Base</th>
 							<th scope="col">Categoría</th>
 							<th scope="col">Cliente</th>
 							<th scope="col">Encargado</th>
-							<th scope="col">Período</th>
 							<th scope="col">C. Interna</th>
 							<th scope="col">C. Histórica</th>
 							<th scope="col">Inicio</th>

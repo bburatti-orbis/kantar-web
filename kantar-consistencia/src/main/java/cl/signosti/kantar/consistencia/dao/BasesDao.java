@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import com.mysql.jdbc.Statement;
 
 import cl.signosti.kantar.consistencia.modelo.Basesm;
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class BasesDao extends JdbcDaoSupport implements Serializable {
 
@@ -51,31 +52,13 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-
 		}
+
 
 		return base;
 	}
@@ -112,29 +95,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -170,29 +134,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -227,29 +172,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -290,29 +216,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -350,29 +257,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -398,31 +286,11 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-
-				}
-			}
-
 		}
 
 	}
@@ -457,26 +325,10 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					logger.error("Error, causa:", e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}

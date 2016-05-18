@@ -37,10 +37,14 @@
    	  		</div>
             
             <div class="control">
+            	<div class="tit_control"><p>Periodo</div>
+            	<div class="llama_pais"><p id="periodo"></div>
+            </div>
+            
+            <div class="control">
             	<div class="tit_control"><p>Base</p></div>
                 <div class="llama_base"><p id="base"></p></div>
         	</div>
-            
             
             <div class="control">
             	<div class="tit_control"><p>Fecha</p></div>

@@ -12,6 +12,8 @@ public class Basesm {
 	String fechamod;
 	int coduser;
 	String correo;
+	
+	private MaestroBase maestroBase = null;
 
 	public int getId() {
 		return id;
@@ -99,6 +101,14 @@ public class Basesm {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	public MaestroBase getMaestroBase() {
+		return maestroBase;
+	}
+
+	public void setMaestroBase(MaestroBase maestroBase) {
+		this.maestroBase = maestroBase;
 	}
 
 }

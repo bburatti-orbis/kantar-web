@@ -38,16 +38,15 @@ $(function() {
 				espacio+="&nbsp;&nbsp;";
 			}
 			list += "<td class='linea'>"+ value.linea + "</td>";
-			list += "<td>" + espacio + value.glosa + "</td>";
+			list += "<td class='glosa'>" + espacio + value.glosa + "</td>";
 			list += "<td>" + value.nivel + "</td>";
-			list += "<td>" + value.totalInformado + "</td>";
-			list += "<td>" + value.totalCalculado + "</td>";
+			list += "<td class='monto'>" + value.totalInformado + "</td>";
+			list += "<td class='monto'>" + value.totalCalculado + "</td>";
 			var a =value.totalInformado-value.totalCalculado;
 			if(a==0){
-				clase="class='error'";
-			}
-			else{
-				clase="class='error'";
+				clase="class='monto'";
+			} else {
+				clase="class='error monto'";
 			}
 			
 			list += "<td  "+clase+" >" + a + "</td>";

@@ -5,6 +5,7 @@ public class ReportNomenm {
 	String tipo;
 	String estado;
 	String pais;
+	String periodo;
 	String base;
 	String fecha;
 	String diferencia;
@@ -40,6 +41,14 @@ public class ReportNomenm {
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+
+	public String getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
 	}
 
 	public String getBase() {

@@ -41,7 +41,7 @@ import cl.signosti.kantar.consistencia.modelo.Paisesm;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
 import cl.signosti.kantar.consistencia.modelo.Resultado;
 import cl.signosti.kantar.consistencia.modelo.ResultadoGeneral;
-import cl.signosti.kantar.consistencia.modelo.ResutadoGeneralm;
+import cl.signosti.kantar.consistencia.modelo.ResultadoGeneralm;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
 import cl.signosti.kantar.consistencia.utils.EnvioMail;
 import cl.signosti.kantar.consistencia.utils.GlosaAprobacion;
@@ -85,10 +85,10 @@ public class Reportes {
 		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		if (desde == null || desde.length() < 8) {
-			desde = sdf.format(date);
+			desde = sdf.format(date)+" 00:00:00";
 		}
 		if (hasta == null || hasta.length() < 8) {
-			hasta = sdf.format(date);
+			hasta = sdf.format(date)+" 23:59:59";
 		}
 		sdf.setLenient(false);
 		try {
@@ -104,7 +104,7 @@ public class Reportes {
 
 		LocatorDao.getInstance();
 		ReportesDao report = LocatorDao.getReportesDao();
-		Map<Integer, ResutadoGeneralm> lista = new HashMap<Integer, ResutadoGeneralm>();
+		Map<Integer, ResultadoGeneralm> lista = new HashMap<Integer, ResultadoGeneralm>();
 		ResultadoGeneral rslt = new ResultadoGeneral();
 
 		lista = report.getResultGeneral(inc, limit, desde, hasta);
@@ -379,5 +379,73 @@ public class Reportes {
 		log.info("Se envio un email a >"+email+"< con mensaje >"+ emailBody +"<");
 		
 		return new Resultado("Email enviado");
+	}
+	
+	@GET
+	@Path("estado/")
+	@Produces({ MediaType.TEXT_HTML })
+	public Response getPaginaEstado(@Context HttpServletRequest req) {
+		HttpSession session = req.getSession(true);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		Object user = session.getAttribute("user");
+		if (user == null) {
+			map.put("cod", 1);
+
+//			return Response.ok(new Viewable("/index", map)).build();
+			return Response.ok(new Viewable("/views/estado")).build();
+
+		} else {
+
+			return Response.ok(new Viewable("/views/estado")).build();
+		}
+
+	}
+
+	@GET
+	@Path("estado/detalle")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResultadoGeneral getEstado(@QueryParam("inc") int inc, @QueryParam("limit") int limit,
+			@QueryParam("desde") String desde, @QueryParam("hasta") String hasta) {
+
+		if (inc <= 0 || limit <= 0) {
+			inc = 0;
+			limit = 100;
+		}
+		Date date = Calendar.getInstance().getTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		if (desde == null || desde.length() < 8) {
+			desde = sdf.format(date)+" 00:00:00";
+		}
+		if (hasta == null || hasta.length() < 8) {
+			hasta = sdf.format(date)+" 23:59:59";
+		}
+		sdf.setLenient(false);
+		try {
+			Date f1 = sdf.parse(desde);
+			Date f2 = sdf.parse(hasta);
+			if (f2.getTime() < f1.getTime()) {
+				hasta = desde;
+			}
+		} catch (Exception e) {
+			desde = sdf.format(date);
+			hasta = sdf.format(date);
+		}
+
+		LocatorDao.getInstance();
+		ReportesDao report = LocatorDao.getReportesDao();
+		Map<Integer, ResultadoGeneralm> lista = new HashMap<Integer, ResultadoGeneralm>();
+		ResultadoGeneral rslt = new ResultadoGeneral();
+
+		lista = report.getResultGeneral(inc, limit, desde, hasta);
+		rslt.setLista(lista);
+		rslt.setInc(inc);
+		rslt.setLimit(limit);
+		rslt.setDesde(desde);
+		rslt.setHasta(hasta);
+
+		return rslt;
+
 	}
 }

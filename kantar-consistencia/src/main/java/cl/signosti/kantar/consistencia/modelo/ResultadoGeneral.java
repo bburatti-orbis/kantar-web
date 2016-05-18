@@ -5,16 +5,16 @@ import java.util.Map;
 public class ResultadoGeneral {
 	private String _rslt;
 	private String _mensaje;
-	private Map<Integer, ResutadoGeneralm> lista;
+	private Map<Integer, ResultadoGeneralm> lista;
 	private int inc;
 	private int limit;
 	private String desde;
 	private String hasta;
 	
-	public Map<Integer, ResutadoGeneralm> getLista() {
+	public Map<Integer, ResultadoGeneralm> getLista() {
 		return lista;
 	}
-	public void setLista(Map<Integer, ResutadoGeneralm> lista) {
+	public void setLista(Map<Integer, ResultadoGeneralm> lista) {
 		this.lista = lista;
 	}
 	public int getInc() {
