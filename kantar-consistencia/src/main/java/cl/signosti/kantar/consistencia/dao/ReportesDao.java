@@ -70,7 +70,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				.append(" LEFT OUTER JOIN clientes c ON c.id = m.idCliente ")
 				.append(" LEFT OUTER JOIN autorizadas aI ON (aI.Ejecuciones_id = e.id && aI.proceso = 0) ")
 				.append(" LEFT OUTER JOIN autorizadas aH ON (aH.Ejecuciones_id = e.id && aH.proceso = 1) ")
-				.append(" LEFT OUTER JOIN paises p ON p.id = m.idPais ")
+				.append(" LEFT OUTER JOIN paises p ON p.id = b.Paises_id ")
 				.append("WHERE e.updated_at >= ? && e.updated_at <= ? ")
 				.append("ORDER BY e.updated_at DESC ")
 				.append("LIMIT ?,? ")
