@@ -27,6 +27,7 @@ public class ResultadoGeneralm {
 	String estado;
 	String usuario;
 	String link;
+	String panel;
 	
 
 
@@ -202,6 +203,14 @@ public class ResultadoGeneralm {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPanel() {
+		return panel;
+	}
+
+	public void setPanel(String panel) {
+		this.panel = panel;
 	}
 		
 }

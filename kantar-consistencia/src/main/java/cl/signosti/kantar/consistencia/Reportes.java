@@ -80,7 +80,7 @@ public class Reportes {
 
 		if (inc <= 0 || limit <= 0) {
 			inc = 0;
-			limit = 100;
+			limit = 500;
 		}
 		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

@@ -54,6 +54,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				.append("   b.id AS 'idbase', ")
 				.append("   b.estadoCI AS 'resultadoCI', ")
 				.append("   b.estadoCH AS 'resultadoCH', ")
+				.append("   b.panel AS 'panel', ")
 				.append("   e.created_at AS 'fecha_inicio', ")
 				.append("   COALESCE(e.fechaTermino, e.updated_at) AS 'fecha_termino', ")
 				.append("   e.estadoCInterna, ")
@@ -103,6 +104,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				result.setFecha_ini(rs.getString("fecha_inicio"));
 				result.setFecha_ter(rs.getString("fecha_termino"));
 				result.setId(rs.getString("id"));
+				result.setPanel(rs.getString("panel"));
 				int estadoCH = rs.getInt("estadoCHistorica");
 				int estadoCI = rs.getInt("estadoCInterna");				
 				
@@ -157,7 +159,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 					result.setEstado("EN PROCESO");
 				}
 				
-				result.setLink(link+"?ruta="+result.getPais()+"\\"+result.getPeriodo()+"\\"+result.getGlosa()+"\\"+result.getGlosa()+".xlsx");
+				result.setLink(link+"?ruta="+result.getPais()+"\\"+result.getPeriodo()+"\\"+result.getPanel()+"\\"+result.getGlosa()+".xlsx");
 
 				lista.put(k, result);
 				k++;

@@ -74,7 +74,7 @@ $(function() {
 								list += "<td>"+ value.estadoCI +"</td>";
 							}
 
-							if (value.estadoCH == "AUTORIZADA" || value.estadoCH == "ERRONEA") {
+							if (value.estadoCH == "AUTORIZADA" || value.estadoCH == "ERRONEA" || value.estadoCH == "OK") {
 								if (value.estadoCH == "ERRONEA") {
 									clase = "class='error'";
 									errorCH = true;
