@@ -15,6 +15,7 @@ import cl.signosti.kantar.consistencia.modelo.AccionBitacora;
 import cl.signosti.kantar.consistencia.modelo.Area;
 import cl.signosti.kantar.consistencia.modelo.Bitacora;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 
@@ -67,33 +68,10 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
-		}
-	}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
-	public void cerrarConexion(ResultSet rs, PreparedStatement pre, Connection conn){
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				 logger.error("Error, causa:" ,
-				 e);
-			}
-		}
-		if (pre != null) {
-			try {
-				pre.close();
-			} catch (SQLException e) {
-				 logger.error("Error, causa:" ,
-				 e);
-			}
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				 logger.error("Error, causa:" ,
-				 e);
 			}
 		}
 	}
@@ -158,7 +136,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 			 e.printStackTrace();
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 		return lb;
 	}
@@ -190,7 +172,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 		return lb;
 	}
@@ -209,7 +195,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 	}
 
@@ -238,7 +228,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 		return lb;
 	}
@@ -269,7 +263,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 		return lb;		
 	}
@@ -289,7 +287,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 	}
 
@@ -308,7 +310,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 		
 	}
@@ -328,7 +334,11 @@ public class BitacoraDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			cerrarConexion(rs, pre, conn);
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
+			}
 		}
 	}
 	

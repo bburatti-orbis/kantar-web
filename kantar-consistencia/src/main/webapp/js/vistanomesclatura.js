@@ -41,7 +41,7 @@ $(function() {
 				clase="class='ok'";
 			}
 			
-			list += "<td>" + value.diferencia + "</td>";
+			list += "<td class='monto'>" + value.diferencia + "</td>";
 			list += "<td  "+clase+" >" + value.estado + "</td>";
 
 			list += "<td><a href='"+ruta+"Reportes/detallenom?codigo="+value.id_nom+"'>DETALLE</a></td></tr>";

@@ -42,7 +42,7 @@ $(function() {
 			list += "<td>" + value.nivel + "</td>";
 			list += "<td class='monto'>" + value.totalInformado + "</td>";
 			list += "<td class='monto'>" + value.totalCalculado + "</td>";
-			var a =value.totalInformado-value.totalCalculado;
+			var a =value.diferencia;
 			if(a==0){
 				clase="class='monto'";
 			} else {

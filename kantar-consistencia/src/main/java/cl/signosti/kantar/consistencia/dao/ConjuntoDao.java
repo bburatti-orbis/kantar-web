@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +12,8 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import cl.signosti.kantar.consistencia.modelo.Conjuntom;
+import cl.signosti.kantar.consistencia.utils.Close;
 
-import com.mysql.jdbc.Statement;
 
 public class ConjuntoDao  extends JdbcDaoSupport {
 	
@@ -32,7 +30,7 @@ public class ConjuntoDao  extends JdbcDaoSupport {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, b);
 
 			pre.executeUpdate();
@@ -45,29 +43,10 @@ public class ConjuntoDao  extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -100,29 +79,10 @@ public class ConjuntoDao  extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}

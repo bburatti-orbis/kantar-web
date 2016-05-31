@@ -3,11 +3,11 @@ package cl.signosti.kantar.consistencia.dao;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class AutorizacionesDao extends JdbcDaoSupport implements Serializable {
 
@@ -33,11 +33,10 @@ public class AutorizacionesDao extends JdbcDaoSupport implements Serializable {
 		
 			pre.executeUpdate();
 		} finally {
-			if(pre != null){
-				pre.close();
-			}
-			if(conn != null){
-				conn.close();
+			try {
+				Close.all(pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 	}

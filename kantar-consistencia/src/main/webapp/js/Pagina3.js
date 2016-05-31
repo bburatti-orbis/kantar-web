@@ -51,6 +51,8 @@ $(function() {
 							errorCI = false;
 							errorCH = false;
 							list += "<tr class='alternar' >";
+							list += "<td> <a href='#'><i class='ui-icon ui-icon-refresh reset' data-id='"
+											+ value.id + "'></i></a></td>";
 							list += "<td>" + value.pais + "</td>";
 							list += "<td>" + value.periodo + "</td>";
 							list += "<td>" + value.glosa + "</td>";
@@ -130,6 +132,28 @@ $(function() {
 		$('#dialog').dialog('option', 'title', msg);
 
 		$('#dialog').dialog({
+			resizable : false,
+			autoOpen : true,
+			modal : true,
+			buttons : {
+				'OK' : function() {
+					def.resolve();
+					$(this).dialog("close");
+				},
+				'Cancel' : function() {
+					def.reject();
+					$(this).dialog("close");
+				}
+			}
+		});
+		return def.promise();
+	}
+	
+	function confirmDialog2(msg) {
+		var def = $.Deferred();
+		$('#dialog2').dialog('option', 'title', msg);
+
+		$('#dialog2').dialog({
 			resizable : false,
 			autoOpen : true,
 			modal : true,
@@ -250,6 +274,33 @@ $(function() {
 				);
 			}
 		);
+	$("#polizas").on(
+			"click",
+			".reset",
+			function() {
+				event.preventDefault();
+				datos.id = $(this).data('id');
+				confirmDialog2("Seguro que desea reprocesar?")
+					.done(function() {
+						$.ajax({
+							type: "POST",
+							contentType: "application/json; charset=utf-8",
+							url: ruta+ "Reportes/reset/"+datos.id,
+							success: function(response){
+								if(response._rslt == "ERROR"){
+									alert(response._mensaje);
+								}else{
+									actualiza();
+								}
+							}
+						})
+					})
+					.fail(function() {
+						// cry a little
+					}
+				);
+			}
+		);
 	
 	$("#dialog").dialog({
 		modal : true,
@@ -265,9 +316,22 @@ $(function() {
 				$(this).dialog("close");
 			}
 		},
-	// close: {
-	// $( this ).remove();
-	// }
+	});
+	
+	$("#dialog2").dialog({
+		modal : true,
+		autoOpen : false,
+		width : 'auto',
+		buttons : {
+			'OK' : function() {
+				def.resolve();
+				$(this).dialog("close");
+			},
+			'Cancel' : function() {
+				def.reject();
+				$(this).dialog("close");
+			}
+		},
 	});
 
 	setInterval(actualiza, 60000);

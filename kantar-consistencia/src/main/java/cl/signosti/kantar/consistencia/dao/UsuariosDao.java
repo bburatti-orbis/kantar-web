@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 	private static final long serialVersionUID = 2591440895912183790L;
@@ -47,28 +48,10 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" , e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -104,29 +87,10 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -166,28 +130,10 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" , e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -224,29 +170,10 @@ public class UsuariosDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}

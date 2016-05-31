@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import cl.signosti.kantar.consistencia.modelo.Estado;
 import cl.signosti.kantar.consistencia.modelo.Tareasm;
+import cl.signosti.kantar.consistencia.utils.Close;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
-import com.mysql.jdbc.Statement;
 
 public class TareasDao extends JdbcDaoSupport implements Serializable{
 
@@ -39,7 +38,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			pre.setString(1, marca.getNombre());
 			pre.setInt(2, marca.getIdresponsable());
@@ -72,31 +71,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		
 		}
@@ -126,7 +105,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 
 			rs = pre.executeQuery();
@@ -151,31 +130,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return consistencia;
 
@@ -191,7 +150,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.setInt(2, codtarea);
 
@@ -213,31 +172,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return consistencia;
 
@@ -257,38 +196,18 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.executeUpdate();
 
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return id;
 
@@ -305,7 +224,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setInt(1, cod);
 
 				rs = pre.executeQuery();
@@ -340,31 +259,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			} catch (Exception e) {
 				 logger.error("Error, causa:" , e);
 			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
 
+				}
 			}
 			return nom;
 
@@ -381,7 +280,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setInt(1, cod);
 
 				rs = pre.executeQuery();
@@ -419,7 +318,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				 logger.error("Error, causa:" , e);
 				 e.printStackTrace();
 			} finally {
-				this.cerrarConexion(rs, pre, conn);
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return nom;
 
@@ -433,7 +336,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			int devuelta = 0;
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setString(1, marca.getNombre());
 				pre.setInt(2, marca.getIdresponsable());
 				pre.setInt(3, marca.getPlazo());
@@ -462,31 +365,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			} catch (Exception e) {
 				 logger.error("Error, causa:" , e);
 			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
 
+				}
 			}
 			return devuelta;
 
@@ -587,39 +470,16 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			
 			return lt;
 		}
 		
-		public void cerrarConexion(ResultSet rs, PreparedStatement pre, Connection conn){
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-		}
-
 		public Estado getEstado(int estadosId) {
 			Estado estado = null;
 			String sql = "SELECT  `id`,  `glosa` FROM `estados` where id = ?;";
@@ -643,7 +503,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return estado;
 		}
@@ -671,61 +535,15 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return estado;
 		}
 
-		
-		
-		private void elimina(int antecesora){
-			String sql = "DELETE FROM tareastareas WHERE idP=?";
-
-			Connection conn = null;
-			ResultSet rs = null;
-			PreparedStatement pre = null;
-			
-			try {
-				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				
-					pre.setInt(1,antecesora);
-					
-					pre.executeUpdate();
-				
-				
-			} catch (Exception e) {
-				 logger.error("Error, causa:" , e);
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-
-			}
-			
-		}
-		
 	private void subtareas(Tareasm tarea){
 		
 		String sql;
@@ -742,7 +560,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				int at=Integer.parseInt(PropertiesUtil.getInstance().recuperaValor("AT"));
 				sql = "Insert into Tareas (nombre,idresponsable,plazo,tiempo,idconjunto,tipo_calendario,proyecto_id,Estados_id,frecuencia,delay,tiempoDelay) values (?,?,?,?,?,?,?,?,1,?,?)";
 				for(int i=0;i<3;i++){
-					pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+					pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 					
 					pre.setInt(2, tarea.getIdresponsable());
 					if(i==0){
@@ -791,31 +609,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 	}
 	
@@ -829,7 +627,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 				pre.setInt(1,antecesora);
 				pre.setInt(2,sucesora);
@@ -840,31 +638,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		
 	}

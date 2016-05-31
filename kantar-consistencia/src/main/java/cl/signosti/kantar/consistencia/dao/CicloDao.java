@@ -5,17 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-
-
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import cl.signosti.kantar.consistencia.modelo.ciclom;
+import cl.signosti.kantar.consistencia.utils.Close;
 
-
-
-import com.mysql.jdbc.Statement;
 
 public class CicloDao   extends JdbcDaoSupport{
 	private static final Logger logger = Logger.getLogger(CicloDao.class);
@@ -32,7 +27,7 @@ public class CicloDao   extends JdbcDaoSupport{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, ciclo.getFechaini());
 			pre.setInt(2, ciclo.getSe_repite());
 			pre.setInt(3, ciclo.getRepetircada());
@@ -50,28 +45,10 @@ public class CicloDao   extends JdbcDaoSupport{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" , e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -93,7 +70,7 @@ public ciclom getciclo(int cod) {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			rs=pre.executeQuery();
 			
@@ -113,28 +90,10 @@ public ciclom getciclo(int cod) {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,	 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}

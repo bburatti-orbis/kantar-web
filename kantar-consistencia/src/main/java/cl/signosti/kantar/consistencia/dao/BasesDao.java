@@ -13,8 +13,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.mysql.jdbc.Statement;
-
 import cl.signosti.kantar.consistencia.modelo.Basesm;
 import cl.signosti.kantar.consistencia.utils.Close;
 
@@ -118,7 +116,7 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, b.getGlosa());
 			pre.setInt(2, 1);
 			pre.setString(3, b.getFechamod());
@@ -203,6 +201,7 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			rs = pre.executeQuery();
 
 			while (rs.next()) {
+				base.setPanel(rs.getString("panel"));
 				base.setCategoria(rs.getString("categoria"));
 				base.setClienteid(rs.getInt("clientes_id"));
 				base.setCoduser(rs.getInt("usuarios_id"));
@@ -211,6 +210,7 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 				base.setGlosa(rs.getString("glosa"));
 				base.setId(rs.getInt("id"));
 				base.setPaisid(rs.getInt("paises_id"));
+				base.setPeriodoid(rs.getInt("periodos_id"));
 			}
 
 		} catch (Exception e) {
@@ -278,7 +278,7 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.setInt(2, id);
 			pre.executeUpdate();
@@ -334,6 +334,32 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		}
 
 		return base;
+	}
+
+	public void delete(int id) {
+		Connection conn = null;
+		PreparedStatement pre = null;
+
+		String sql = "DELETE FROM Bases WHERE id="+id;
+
+		try {
+			conn = getDataSource().getConnection();
+			pre = conn.prepareStatement(sql);
+
+			pre.executeUpdate();
+
+
+		} catch (Exception e) {
+			logger.error("Error, causa:", e);
+		} finally {
+			try{
+				Close.all(pre, conn);
+			} catch (Exception e){
+				// 
+			}
+
+		}
+		
 	}
 
 }

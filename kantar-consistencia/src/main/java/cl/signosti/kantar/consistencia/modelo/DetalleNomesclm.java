@@ -5,6 +5,7 @@ public class DetalleNomesclm {
 	String nivel;
 	String totalInformado;
 	String totalCalculado;
+	String diferencia;
 	String estado;
 	String nomenclatura;
 	String tipo_nomencl;
@@ -43,6 +44,14 @@ public class DetalleNomesclm {
 
 	public void setTotalCalculado(String totalCalculado) {
 		this.totalCalculado = totalCalculado;
+	}
+
+	public String getDiferencia() {
+		return diferencia;
+	}
+
+	public void setDiferencia(String diferencia) {
+		this.diferencia = diferencia;
 	}
 
 	public String getEstado() {

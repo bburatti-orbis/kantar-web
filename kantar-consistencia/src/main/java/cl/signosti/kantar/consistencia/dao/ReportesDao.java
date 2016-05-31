@@ -50,7 +50,8 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				.append("   COALESCE(c.nombre, 'No asignado') AS 'cliente', ")
 				.append("   CONCAT_WS(' ', encargado.nombre, encargado.apellido) AS 'encargado', ")
 				.append("   CONCAT_WS(' ', ejecutivo.nombre, ejecutivo.apellido) AS 'ejecutivo', ")
-				.append("   r.periodo, ")
+				.append("   r.dirName as 'dirName', ")
+				.append("   r.periodo as 'periodo', ")
 				.append("   b.id AS 'idbase', ")
 				.append("   b.estadoCI AS 'resultadoCI', ")
 				.append("   b.estadoCH AS 'resultadoCH', ")
@@ -159,7 +160,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 					result.setEstado("EN PROCESO");
 				}
 				
-				result.setLink(link+"?ruta="+result.getPais()+"\\"+result.getPeriodo()+"\\"+result.getPanel()+"\\"+result.getGlosa()+".xlsx");
+				result.setLink(link+"?ruta="+result.getPais()+"\\"+rs.getString("dirName")+"\\"+result.getPanel()+"\\"+result.getGlosa()+".xlsx");
 
 				lista.put(k, result);
 				k++;
@@ -236,7 +237,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				result.setPeriodo(rs.getString("periodo"));
 				result.setBase(rs.getString("base"));
 				result.setFecha(rs.getString("fecha"));
-				result.setDiferencia(rs.getString("diferencia"));
+				result.setDiferencia(String.format("%,d", rs.getInt("diferencia")).replace(',', '.'));
 				result.setId_nom(rs.getString("idnom"));
 
 				lista.put(k, result);
@@ -304,12 +305,15 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				result.setLinea(n+rs.getString("linea"));
 				
 				result.setEstado(rs.getString("estadoCI"));
-				result.setTotalInformado(rs.getString("total_informado"));
+				result.setTotalInformado(String.format("%,d", rs.getInt("total_informado")).replace(",","."));
 				if(rs.getInt("estadoCInterna") == 3){
-					result.setTotalCalculado(rs.getString("total_informado"));
+					result.setTotalCalculado(String.format("%,d", rs.getInt("total_informado")).replace(",", "."));
+					result.setDiferencia("0");
 				} else {
-					result.setTotalCalculado(rs.getString("total_calculado"));
+					result.setTotalCalculado(String.format("%,d", rs.getInt("total_calculado")).replace(",", "."));
+					result.setDiferencia(String.format("%,d", rs.getInt("total_informado")-rs.getInt("total_calculado")).replace(",","."));
 				}
+				
 				result.setNomenclatura(rs.getString("nomenclatura"));
 				result.setTipo_nomencl(rs.getString("IT2"));
 				result.setFecha(rs.getString("fecha"));

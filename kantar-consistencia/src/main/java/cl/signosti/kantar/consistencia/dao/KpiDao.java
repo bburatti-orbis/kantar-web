@@ -12,8 +12,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.mysql.jdbc.Statement;
-
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
 import cl.signosti.kantar.consistencia.modelo.AlcancesKpiM;
 import cl.signosti.kantar.consistencia.modelo.Area;
@@ -29,6 +27,7 @@ import cl.signosti.kantar.consistencia.modelo.ParametrosKpiM;
 import cl.signosti.kantar.consistencia.modelo.Semaforo;
 import cl.signosti.kantar.consistencia.modelo.SemaforoKpi;
 import cl.signosti.kantar.consistencia.modelo.StoreProcedure;
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class KpiDao extends JdbcDaoSupport implements Serializable{
 
@@ -89,29 +88,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 	
 		}
@@ -150,29 +130,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -212,29 +173,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 	
 		}
@@ -274,29 +216,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 	
 		}
@@ -336,29 +259,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 	
 		}
@@ -397,29 +301,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 	
 		}
@@ -466,29 +351,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -531,29 +397,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -590,29 +437,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -649,29 +477,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -708,29 +517,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -767,29 +557,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -808,7 +579,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, kpi.getGlosa());
 			pre.setString(2, kpi.getTipo());
 			pre.setString(3, kpi.getNombreSp());
@@ -831,31 +602,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			e.printStackTrace();
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return id;
 	}
@@ -873,7 +624,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, kpi.getGlosa());
 			pre.setString(2, kpi.getTipo());
 			pre.setString(3, kpi.getNombreSp());
@@ -895,31 +646,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			e.printStackTrace();
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return id;
 	}
@@ -934,7 +665,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		int id = 0;
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, param.getDescripcion());
 			pre.setInt(2, param.getKpi());
 			pre.setInt(3, param.getParametro());
@@ -963,31 +694,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			e.printStackTrace();
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			
 		}
 		return id;
 	}
@@ -1001,7 +712,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		int id = 0;
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, sema.getPais());
 			pre.setInt(2, sema.getKpi());
 			pre.setInt(3, sema.getOrden());
@@ -1018,31 +729,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			
 		}
 		return id;
 	}
@@ -1056,7 +747,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		int id = 0;
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, sema.getKpi());
 			pre.setInt(2, sema.getOrden());
 			pre.setInt(3, sema.getOperador());
@@ -1072,31 +763,11 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			
 		}
 		return id;
 	}
@@ -1134,29 +805,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 //		System.out.println("resultados query "+datos.getGlosa());
@@ -1206,29 +858,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -1273,29 +906,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return datos;
@@ -1334,29 +948,10 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return flag;

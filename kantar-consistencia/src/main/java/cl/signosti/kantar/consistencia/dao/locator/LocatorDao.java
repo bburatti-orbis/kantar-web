@@ -18,6 +18,7 @@ import cl.signosti.kantar.consistencia.dao.ReportesDao;
 import cl.signosti.kantar.consistencia.dao.TareasDao;
 import cl.signosti.kantar.consistencia.dao.UsuariosDao;
 import cl.signosti.kantar.consistencia.dao.PaisesDao;
+import cl.signosti.kantar.consistencia.dao.PeriodosDao;
 import cl.signosti.kantar.consistencia.dao.EjecucionesDao;
 import cl.signosti.kantar.consistencia.dao.KpiDao;
 import cl.signosti.kantar.consistencia.dao.BitacoraDao;
@@ -102,6 +103,10 @@ public class LocatorDao implements Serializable {
 	}
 	public static AutorizacionesDao getAutorizacionesDao() {
 		return (AutorizacionesDao) context.getBean("AutorizacionesDao");
+	}
+	
+	public static PeriodosDao getPeriodosDao() {
+		return (PeriodosDao) context.getBean("PeriodosDao");
 	}
 
 }

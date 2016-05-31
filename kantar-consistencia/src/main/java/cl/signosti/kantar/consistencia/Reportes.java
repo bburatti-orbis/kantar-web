@@ -15,6 +15,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -46,8 +47,9 @@ import cl.signosti.kantar.consistencia.modelo.Usuariom;
 import cl.signosti.kantar.consistencia.utils.EnvioMail;
 import cl.signosti.kantar.consistencia.utils.GlosaAprobacion;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
+import cl.signosti.kantar.consistencia.utils.Reset;
 
-@Path("/Reportes")
+@Path("Reportes")
 public class Reportes {
 
 	private static final Logger log = Logger.getLogger(Reportes.class);
@@ -73,7 +75,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("Report/")
+	@Path("Report")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResultadoGeneral getreportg(@QueryParam("inc") int inc, @QueryParam("limit") int limit,
 			@QueryParam("desde") String desde, @QueryParam("hasta") String hasta) {
@@ -119,7 +121,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("fecha/")
+	@Path("fecha")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getfecha() throws SQLException {
 
@@ -135,7 +137,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/nomenclatura")
+	@Path("nomenclatura")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getnomenclatura(@QueryParam("codigo") String codigo) throws SQLException {
 
@@ -144,7 +146,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/nomenclatura/nomenc")
+	@Path("nomenclatura/nomenc")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getnomenclaturalista(@QueryParam("codigo") int codigo) throws SQLException {
 
@@ -162,7 +164,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/nomenclatura/detallenomenc")
+	@Path("nomenclatura/detallenomenc")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Map<Integer, DetalleNomesclm> getdetallenomenc(@QueryParam("codigo") int codigo) throws SQLException {
 
@@ -177,7 +179,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/detallenom")
+	@Path("detallenom")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getdetallenom(@QueryParam("codigo") String codigo) throws SQLException {
 
@@ -186,7 +188,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/descexcel")
+	@Path("descexcel")
 	@Produces("application/vnd.ms-excel")
 	public Response getdescexcel(@QueryParam("ruta") String ruta) throws SQLException, IOException {
 
@@ -200,7 +202,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/gest_proyec")
+	@Path("gest_proyec")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getgest_proyec(@Context HttpServletRequest req) {
 
@@ -222,7 +224,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/revisarProyecto")
+	@Path("revisarProyecto")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getLitadoProyectos(@Context HttpServletRequest req) {
 
@@ -243,7 +245,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/perforEjecutivo")
+	@Path("perforEjecutivo")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getPlazos(@Context HttpServletRequest req) {
 
@@ -264,7 +266,7 @@ public class Reportes {
 	}
 
 	@GET
-	@Path("/reporteRevisarProyecto")
+	@Path("reporteRevisarProyecto")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getReporteRevisaP(@Context HttpServletRequest req) {
 
@@ -288,7 +290,26 @@ public class Reportes {
 	}
 
 	@POST
-	@Path("/autoriza")
+	@Path("reset/{idEjecucion}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Resultado getReset(@Context HttpServletRequest req, @PathParam("idEjecucion") int idEjecucion){
+		Resultado rslt = new Resultado("0", "Recalculando ejecución");
+		HttpSession session = req.getSession(true);
+		Usuariom user = (Usuariom) session.getAttribute("user");
+		if (user == null) {
+			return new Resultado(101, "Usuario no conectado");
+		}
+		
+		if (Reset.ejecucion(idEjecucion)){
+			rslt = new Resultado("201", "Error Interno de la aplicación");
+		} 
+		
+		return rslt;
+	}
+	
+	
+	@POST
+	@Path("autoriza")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Resultado getAutorizaHistorica(@Context HttpServletRequest req, GlosaAprobacion glosaAprobacion) {
@@ -317,7 +338,7 @@ public class Reportes {
 	}
 
 	@POST
-	@Path("/emailTerminada")
+	@Path("emailTerminada")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Resultado getEmailTerminada(@Context HttpServletRequest req, GlosaAprobacion glosaAprobacion) {
@@ -382,7 +403,7 @@ public class Reportes {
 	}
 	
 	@GET
-	@Path("estado/")
+	@Path("estado")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getPaginaEstado(@Context HttpServletRequest req) {
 		HttpSession session = req.getSession(true);

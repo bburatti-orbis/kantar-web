@@ -1,5 +1,6 @@
 package cl.signosti.kantar.consistencia.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,14 +12,15 @@ import org.apache.log4j.Logger;
 
 import cl.signosti.kantar.consistencia.dao.locator.LocatorDao;
 import cl.signosti.kantar.consistencia.modelo.Paisesm;
+import cl.signosti.kantar.consistencia.utils.Close;
 
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.mysql.jdbc.Statement;
 
-public class PaisesDao extends JdbcDaoSupport {
+public class PaisesDao extends JdbcDaoSupport implements Serializable {
 
-//	private static final long serialVersionUID = 2591440895912183790L;
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger logger = Logger.getLogger(PaisesDao.class);
 
 	public Map<Integer, Paisesm> getlistapaises() {
@@ -48,29 +50,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -104,29 +87,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -159,29 +123,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -202,7 +147,7 @@ public class PaisesDao extends JdbcDaoSupport {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, pais);
 			pre.setString(2, ruta);
 			pre.setInt(3, 1);
@@ -216,29 +161,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -269,29 +195,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -318,29 +225,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 
 		}
@@ -373,29 +261,10 @@ public class PaisesDao extends JdbcDaoSupport {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
+
 			}
 		}
 		return pais;

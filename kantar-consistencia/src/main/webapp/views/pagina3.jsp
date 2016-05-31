@@ -26,6 +26,7 @@
 	<div id="dialog">
 		<textarea id="glosa" rows="4" cols="50"></textarea><br>
 	</div>
+	<div id="dialog2"></div>
 
 	<div id="wrap">
 		<header>
@@ -103,6 +104,7 @@
 				<table id="polizas">
 					<thead>
 						<tr>
+							<th scope="col"></th>
 							<th scope="col">País</th>
 							<th scope="col">Período</th>
 							<th scope="col">Base</th>
