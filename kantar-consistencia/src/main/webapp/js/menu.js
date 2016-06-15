@@ -49,4 +49,8 @@ $(function() {
 	$('#mantenedor').on('click',function (){
 		location.href=ruta+"KPI/kpi_kpi";
 	});
+	$('#motor_manual').on('click',function (){
+		location.href=ruta+"Motor_manual/motor";
+	});
+	
 });

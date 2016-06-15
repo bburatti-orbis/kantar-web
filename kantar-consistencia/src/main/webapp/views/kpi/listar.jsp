@@ -11,6 +11,14 @@
 	<script src="../../dwr/engine.js"></script>
 	<script src="../../dwr/interface/ModuloKpiDWR.js"></script>
 	<style>
+	
+	table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+    	color:black!important;
+	}
+	
+	table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.even {
+    	color:black!important;
+	}
 		.nombreYFecha{
 			float:right;
 		}
@@ -70,17 +78,21 @@
 
 $(document).ready(function(){
 	$.fn.dataTableExt.sErrMode = 'throw';
-	
+	console.log("1");
 	//Carga grilla
 	cargaGrilla(null);
 });
 
  function cargaGrilla(nombre_kpi){
+		console.log("2");
 	ModuloKpiDWR.listadoKpi(nombre_kpi,{
 		callback:function(resp){
+			console.log("3");
 			if(resp != null){
+				console.log("4");
 				tareasGrid2(resp);
 			}else{
+				console.log("5");
 				alert("No existen Kpi's para mostrar");
 			}
 		}
@@ -88,6 +100,7 @@ $(document).ready(function(){
 }
 
  function parseDataJswonToDatatables(data){
+		console.log("7");
 		var d = [];
 		/* var editTemplate = "<form action='Editar' method='post'><input type='hidden' name='id' value='$_id_$'/><input type='submit' value='Editar'/></form>"; */
 		var editTemplate = "<form action='kpi_kpi/editar' method='post'><input type='hidden' name='id' value='$_id_$'/><input type='submit' value='Editar'/></form>";
@@ -110,8 +123,9 @@ $(document).ready(function(){
 	}
 
 function tareasGrid2(data){
-	
+	console.log("6");
     $('#example').DataTable( {
+    	aaSorting: [],
         data: parseDataJswonToDatatables(data),
         columns: [
             { title: "Nombre Kpi" },
@@ -132,12 +146,20 @@ function crear(){
 </head>
 <body>
 <div>
-	<div class="subTituloPag">Listado de Kpi's</div>
-	<div style="color:black;!important;font-size: 12px!important;overflow-x:scroll;" width="65%">
-		<table id="example" class="display" width="65%"></table>
+
+<!-- 	<div class="subTituloPag">Listado de Kpi's</div> -->
+	
+			<div class="caja_titulo">
+				<p>Listado de Kpi's</p>
+			</div>
+	
+	<hr/>
+	
+<!-- 	<div style="font-size: 12px!important;overflow-x:scroll;" > -->
+		<table id="example" class="display"></table>
 		<br/>
 		<input class="boton3" type="button" value="Crear" onclick="crear();"/>
-	</div>
+<!-- 	</div> -->
 </div>
 </body>
 <jsp:include page="../../views/generales/footer.jsp" flush="true"/>

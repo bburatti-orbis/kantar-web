@@ -1,6 +1,3 @@
-|
-
-
 <div id="ex1" style="display:none;">
 
 <div  class="titulo">Programación  de Proyecto </div>
