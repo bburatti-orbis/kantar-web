@@ -134,7 +134,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+					 
 			}
 
 		}
@@ -220,7 +220,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+
 			}
 	
 		}
@@ -401,7 +401,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+
 			}
 		}
 		return datos;
@@ -521,7 +521,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+
 			}
 		}
 		return datos;
@@ -561,7 +561,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+
 			}
 		}
 		return datos;
@@ -767,7 +767,7 @@ public class KpiDao extends JdbcDaoSupport implements Serializable{
 			try {
 				Close.all(rs, pre, conn);
 			} catch (SQLException e) {
-					 e);
+
 			}
 		}
 		return id;

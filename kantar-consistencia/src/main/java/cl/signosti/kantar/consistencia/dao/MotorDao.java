@@ -1117,7 +1117,7 @@ public class MotorDao extends JdbcDaoSupport implements Serializable {
 			rs = pre.executeQuery();
 			
 			while (rs.next()) {
-				usuario.setEmai(rs.getString("email"));
+				usuario.setEmail(rs.getString("email"));
 			}
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
