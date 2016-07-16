@@ -26,7 +26,7 @@ public class ConjuntoDao  extends JdbcDaoSupport {
 		PreparedStatement pre = null;
 
 		String sql = "INSERT INTO Conjunto(nombre) "
-				+ "values (?)";
+				+ "VALUES (?)";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -59,8 +59,8 @@ public class ConjuntoDao  extends JdbcDaoSupport {
 		PreparedStatement pre = null;
 
 		List<Conjuntom> base = new ArrayList<Conjuntom>();
-		String sql = "select DISTINCT   a.id,a.nombre from conjunto a, bases b,paises c, proyecto d where a.id=b.Conjunto_id and b.Paises_id=c.id  and d.Paises_id=c.id and d.id=?";
-		 System.out.println(sql);
+		String sql = "SELECT DISTINCT a.id, a.nombre FROM conjunto a, bases b,paises c, proyecto d WHERE a.id=b.Conjunto_id AND b.Paises_id=c.id AND d.Paises_id=c.id AND d.id=?";
+//		System.out.println(sql);
 
 		try {
 			conn = getDataSource().getConnection();

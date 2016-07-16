@@ -9,7 +9,6 @@ $(function() {
 
 	var url = ruta + "gestion/gettareas?codigo="+codigo;
 	
-	
 	$.getJSON(url).done(function(dat) {
 		window.dattabla = dat;
 
@@ -25,7 +24,11 @@ $(function() {
 			list += "<td class='linea'>" + value.plazo + " "+value.tiempo+ "</td>";
 			list += "<td class='linea'>" + value.nomencargado + "</td>";
 			list += "<td class='linea'>" + value.idantesesora + "</td>";
-			list += " <td>  <img SRC='../../img/guion.png' class='eliminar' value='"+value.id+"'><a><IMG SRC='../../img/suma.png' class='agregar' BORDER=2 ALT='DETALLE'></a><IMG SRC='../../img/editar.png' class='editar' BORDER=2 ALT='EDITAR'></td></tr>";
+			list += "<td>"
+			list +=   "<img SRC='../../img/guion.png' class='eliminar' value='"+value.id+"'>"
+			//list +=   "<a><IMG SRC='../../img/suma.png' class='agregar' BORDER=2 ALT='DETALLE'></a>"
+			list +=   "<IMG SRC='../../img/editar.png' class='editar' BORDER=2 ALT='EDITAR'>"
+			list += "</td></tr>";
 		});
 		$("#polizas").find('tbody').html(list);
 	}
@@ -155,41 +158,42 @@ $(function() {
 					
 
 			});
-				 list+= "</select>";
-				 $("#sele").html(list);  
-					
-				    $("select#tareas").multipleSelect({
-				        filter: true
-				    });
-				    $("select#tareas").multipleSelect("setSelects", antecesoras);
-			});
-				var url=ruta+"gestion/getciclo?accion="+dat.idconjunto;
-				$.getJSON(url).done(function(dato) {
-					var list= "<option value='0'></option>";
-					$.each(dato , function(j,i){
-						
-						
-						if(dat.idconjunto==i.id){
-							list+= "<option value='"+i.id+"' selected>"+i.nombre+"</option>";
-						}
-						else{
-							list+= "<option value='"+i.id+"'>"+i.nombre+"</option>";
-						}
-						
-						
-					} );
-						
-					 $("#conjuntos").html(list);  
-					
-				});
 				
-				 $('#tiempo > option[value="'+dat.tiempo+'"]').attr('selected', 'selected');
-				 $('#tiempodelay > option[value="'+dat.tiempodelay+'"]').attr('selected', 'selected');
-				 $('#tareas > option[value="'+dat.idantesesora+'"]').attr('selected', 'selected');
-				 $('#calendario > option[value="'+dat.tipo_calendario+'"]').attr('selected', 'selected');
-				 
+			list+= "</select>";
+			$("#sele").html(list);  
+				
+			    $("select#tareas").multipleSelect({
+			        filter: true
+			    });
+			    $("select#tareas").multipleSelect("setSelects", antecesoras);
+			});
+			
+			var url=ruta+"gestion/getciclo?accion="+dat.idconjunto;
+			$.getJSON(url).done(function(dato) {
+				var list= "<option value='0'></option>";
+				$.each(dato , function(j,i){
+					
+					if(dat.idconjunto==i.id){
+						list+= "<option value='"+i.id+"' selected>"+i.nombre+"</option>";
+					}
+					else{
+						list+= "<option value='"+i.id+"'>"+i.nombre+"</option>";
+					}
+					
+					
+				} );
+					
+				 $("#conjuntos").html(list);  
+				
+			});
+				
+			$('#tiempo > option[value="'+dat.tiempo+'"]').attr('selected', 'selected');
+			$('#tiempodelay > option[value="'+dat.tiempodelay+'"]').attr('selected', 'selected');
+			$('#tareas > option[value="'+dat.idantesesora+'"]').attr('selected', 'selected');
+			$('#calendario > option[value="'+dat.tipo_calendario+'"]').attr('selected', 'selected');
+			 
 
-					$('#ex').modal();
+			$('#ex').modal();
 		});
 		
 		});
@@ -201,30 +205,35 @@ $(function() {
 		criterio.id=$('#id_tarea').val();
 		criterio.users=$('select#users').val();
 		criterio.plazo=$('#plazo').val();
+		
+		if($('select#tiempo').val() === null){
+			alert('Debe indicar una unidad de tiempo para el Plazo!')
+			return
+		}
 		criterio.tiempo=$('select#tiempo').val();	
 		criterio.tareas=$('select#tarea').val();	
 		criterio.calendario=$('select#calendario').val();	
 		criterio.conjunto=$('select#conjuntos').val();	
 		criterio.frecuencia=$("#frecuencia").val();
 		criterio.delay=$("#delay").val();
+		
+		if($('select#tiempodelay').val() === null){
+			alert('Debe indicar una unidad del tiempos para el Delay!')
+			return
+		}
 		criterio.tiempodelay=$('select#tiempodelay').val();
 		
 		var vector =$("select#tareas").multipleSelect("getSelects");
 		var arreglo="";
 		var s=true;
 		$.each(vector, function (ind, elem) { 
-			  if (!s){
-				  arreglo+=";";  
-			  }
-			  arreglo+=elem;
-			  s=false;
-			}); 
+			if (!s){
+				arreglo+=";";  
+			}
+			arreglo+=elem;
+			s=false;
+		}); 
 		criterio.idantecesora=arreglo;
-		
-		
-		
-		
-		
 		
 		$.post(ruta + "gestion/actualizatarea", criterio, function(
 				data, textStatus) {
@@ -232,6 +241,7 @@ $(function() {
 		}, "json");
 		
 	});
+	
 	$("#volver").on("click",function() {
 		location.href=ruta+"gestion";
 	});

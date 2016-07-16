@@ -396,16 +396,16 @@ public class GestionProyecto {
 			tarea.setNombre(formParams.getFirst("nombre"));
 			tarea.setIdresponsable(Integer.parseInt(formParams.getFirst("idresponsable")));
 			tarea.setPlazo(Integer.parseInt(formParams.getFirst("plazo")));
-			tarea.setTiempo(formParams.getFirst("tiempo"));
-			tarea.setTiempodelay(formParams.getFirst("tiempodelay"));
+			tarea.setTiempo(Integer.parseInt(formParams.getFirst("tiempo")));
+			tarea.setTiempodelay(Integer.parseInt(formParams.getFirst("tiempodelay")));
 			
-					String idante= formParams.getFirst("conjunto");
-					if(idante.equals("0")){
-						tarea.setIdconjunto(null);
-					}
-					else{
-						tarea.setIdconjunto(Integer.parseInt(idante));
-					}
+			String idante= formParams.getFirst("conjunto");
+			if(idante.equals("0")){
+				tarea.setIdconjunto(null);
+			}
+			else{
+				tarea.setIdconjunto(Integer.parseInt(idante));
+			}
 					
 					
 			tarea.setDelay(Integer.parseInt(formParams.getFirst("delay")));
@@ -419,7 +419,7 @@ public class GestionProyecto {
 				arreglo[i]=Integer.parseInt(t[i]);
 			}
 				
-				tarea.setIdantesesora(arreglo);	
+			tarea.setIdantesesora(arreglo);	
 			
 			
 			
@@ -540,9 +540,9 @@ public class GestionProyecto {
 		} else {	
 			List<Tareasm> list=null;
 			LocatorDao.getInstance();
-			TareasDao o=LocatorDao.getTareasDao();
+			TareasDao tareasDao = LocatorDao.getTareasDao();
 			try {
-				list=o.gettarea(cod);
+				list = tareasDao.gettarea(cod);
 			} catch (SQLException e) {
 				
 					 logger.error("Error, causa:" ,e);
@@ -682,7 +682,7 @@ public class GestionProyecto {
 	@POST
 	@Path("/actualizatarea")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response actualizatarea(@Context HttpServletRequest req,MultivaluedMap<String, String> formParams ) {
+	public Response actualizatarea(@Context HttpServletRequest req, MultivaluedMap<String, String> formParams ) {
 
   		HttpSession session = req.getSession(true);
 
@@ -702,19 +702,23 @@ public class GestionProyecto {
 			proyec.setIdresponsable(Integer.parseInt(formParams.getFirst("users")));
 			proyec.setPlazo(Integer.parseInt(formParams.getFirst("plazo")));
 			proyec.setTipo_calendario(Integer.parseInt(formParams.getFirst("calendario")));
-			proyec.setTiempo(formParams.getFirst("tiempo"));
+			proyec.setTiempo(Integer.parseInt(formParams.getFirst("tiempo")));
 			String predecesoras=formParams.getFirst("idantecesora");
 			
-			String[] t= predecesoras.split(";");
+			String[] t = predecesoras.split(";");
 			Integer[] arreglo= new Integer[t.length];
-			for(int i =0; i<t.length; i++){
-				arreglo[i]=Integer.parseInt(t[i]);
+			for(int i=0; i < t.length; i++){
+				try{
+					arreglo[i] = Integer.parseInt(t[i]);
+				} catch (Exception e) {
+					
+				}
 			}
 				
 			proyec.setIdantesesora(arreglo);		
 			proyec.setDelay(Integer.parseInt(formParams.getFirst("delay")));
 			proyec.setFrecuencia(Integer.parseInt(formParams.getFirst("frecuencia")));
-			proyec.setTiempodelay(formParams.getFirst("tiempodelay"));
+			proyec.setTiempodelay(Integer.parseInt(formParams.getFirst("tiempodelay")));
 			String idante= formParams.getFirst("conjunto");
 			if(idante.equals("0")){
 				proyec.setIdconjunto(null);
@@ -723,11 +727,9 @@ public class GestionProyecto {
 				proyec.setIdconjunto(Integer.parseInt(idante));
 			}
 		
-
-			
 			LocatorDao.getInstance();
 			TareasDao p = LocatorDao.getTareasDao();
-			p.setupdatetarea(proyec);
+			p.setUpdateTarea(proyec);
 			
 			Gson gson = new Gson();	
 			String resp = gson.toJson(true);

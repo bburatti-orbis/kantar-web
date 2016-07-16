@@ -26,7 +26,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 
-		String sql = "INSERT INTO Proyecto (nombre,calendario,paises_id,ciclo_id,Estados_id)values(?,?,?,?,?)";
+		String sql = "INSERT INTO Proyecto (nombre, calendario, paises_id, ciclo_id, Estados_id) VALUES (?, ?, ?, ?, ?)";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -64,7 +64,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 
-		String sql = "update proyecto set Estados_id=1 where id=? ";
+		String sql = "UPDATE proyecto SET Estados_id=1 WHERE id=? ";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -92,7 +92,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		PreparedStatement pre = null;
 		List<vproyecm> list = new ArrayList<vproyecm>();
 
-		String sql = "select 	a.id,	a.nombre,b.fecha_ini,b.serepite,b.repetircada, b.tipo_termino,b.repeticiones,b.repetir_hasta,b.repetirel, c.nombre as 'pais' from proyecto a , ciclo b, paises c where a.ciclo_id=b.id and a.Paises_id=c.id and a.Estados_id=3";
+		String sql = "SELECT a.id, a.nombre, b.fecha_ini, b.serepite, b.repetircada, b.tipo_termino, b.repeticiones, b.repetir_hasta, b.repetirel, c.nombre AS 'pais' FROM proyecto a , ciclo b, paises c WHERE a.ciclo_id=b.id AND a.Paises_id=c.id AND a.Estados_id=3";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -137,7 +137,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 
-		String sql = "update proyecto set Estados_id=3,nombre=?,calendario=?,paises_id=?,ciclo_id=? where id=? ";
+		String sql = "UPDATE proyecto SET Estados_id=3, nombre=?, calendario=?, paises_id=?, ciclo_id=? WHERE id=? ";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -169,7 +169,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		PreparedStatement pre = null;
 		Proyectom proyec = new Proyectom();
 
-		String sql = "Select * from proyecto where id=?";
+		String sql = "SELECT * FROM proyecto WHERE id=?";
 		LocatorDao.getInstance();
 
 		try {
@@ -208,7 +208,7 @@ public class ProyectoDao extends JdbcDaoSupport {
 		PreparedStatement pre = null;
 		ProyectoEjecucion proyec = new ProyectoEjecucion();
 
-		String sql = "Select * from proyecto_ejecucion where id_proyecto=?";
+		String sql = "SELECT * FROM proyecto_ejecucion WHERE id_proyecto=?";
 		LocatorDao.getInstance();
 
 		try {
