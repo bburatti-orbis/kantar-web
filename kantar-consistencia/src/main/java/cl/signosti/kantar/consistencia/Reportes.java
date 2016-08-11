@@ -82,12 +82,16 @@ public class Reportes {
 
 		if (inc <= 0 || limit <= 0) {
 			inc = 0;
-			limit = 500;
+			limit = 1000;
 		}
 		Date date = Calendar.getInstance().getTime();
+		
+		Calendar ayer = Calendar.getInstance();
+        ayer.add(Calendar.DATE, -1);
+        
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		if (desde == null || desde.length() < 8) {
-			desde = sdf.format(date)+" 00:00:00";
+			desde = sdf.format(ayer.getTime())+" 00:00:00";
 		}
 		if (hasta == null || hasta.length() < 8) {
 			hasta = sdf.format(date)+" 23:59:59";

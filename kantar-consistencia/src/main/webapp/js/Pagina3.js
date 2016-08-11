@@ -56,9 +56,9 @@ $(function() {
 							list += "<td>" + value.pais + "</td>";
 							list += "<td>" + value.periodo + "</td>";
 							list += "<td>" + value.glosa + "</td>";
-							list += "<td>" + value.descripcion + "</td>";
-							list += "<td>" + value.cliente + "</td>";
-							list += "<td>" + value.ejecutivo + "</td>";							
+							// list += "<td>" + value.descripcion + "</td>";
+							// list += "<td>" + value.cliente + "</td>";
+							list += "<td>" + value.encargado + "</td>";							
 							
 							
 							clase = (value.estadoCI == "ERRONEA"?"class='error'":"class='ok'");
@@ -205,6 +205,7 @@ $(function() {
 						// cry a little
 					});
 			});
+	
 	$("#polizas").on(
 			"click", 
 			".errorCI", 
@@ -274,6 +275,7 @@ $(function() {
 				);
 			}
 		);
+	
 	$("#polizas").on(
 			"click",
 			".reset",
