@@ -65,7 +65,11 @@ $(function() {
 							if (value.estadoCI == "AUTORIZADA" || value.estadoCI == "ERRONEA") {
 								list += "<td><a href='" + ruta
 										+ "Reportes/nomenclatura?codigo="
-										+ value.idBases + "' " + clase + " >"
+										+ value.idBases + "' " + clase;
+								if(value.glosaAutorizaCI != null){
+									list += " title='"+value.glosaAutorizaCI+"'";
+								}
+								list += " >"
 										+ value.estadoCI + "</a>";
 								if (value.estadoCI == "ERRONEA") {
 									list += " <a href='#'><i class='ui-icon ui-icon-check errorCI' data-id='"
@@ -83,7 +87,11 @@ $(function() {
 								} else {
 									clase = "class='ok'";
 								}
-								list += "<td> <a href='" + value.link + "' " + clase + ">" + value.estadoCH + "</a>";
+								list += "<td> <a href='" + value.link + "' " + clase;
+								if(value.glosaAutorizaCH != null){
+									list += " title='"+value.glosaAutorizaCH+"'";
+								}
+								list += " >" + value.estadoCH + "</a>";
 								if (errorCH) {
 									list += " <a href='#'><i class='ui-icon ui-icon-check errorCH' data-id='"
 											+ value.id + "'></i></a>";

@@ -28,8 +28,8 @@ public class ResultadoGeneralm {
 	String usuario;
 	String link;
 	String panel;
-	
-
+	String glosaAutorizaCI;
+	String glosaAutorizaCH;
 
 	public String getPais() {
 		return pais;
@@ -211,6 +211,22 @@ public class ResultadoGeneralm {
 
 	public void setPanel(String panel) {
 		this.panel = panel;
+	}
+
+	public String getGlosaAutorizaCI() {
+		return glosaAutorizaCI;
+	}
+
+	public void setGlosaAutorizaCI(String glosaAutorizaCI) {
+		this.glosaAutorizaCI = glosaAutorizaCI;
+	}
+
+	public String getGlosaAutorizaCH() {
+		return glosaAutorizaCH;
+	}
+
+	public void setGlosaAutorizaCH(String glosaAutorizaCH) {
+		this.glosaAutorizaCH = glosaAutorizaCH;
 	}
 		
 }

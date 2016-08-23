@@ -62,7 +62,9 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				.append("   e.estadoCHistorica, ")
 				.append("   e.id, ")
 				.append("   COALESCE(aI.id, 0) AS 'autorizacionInterna', ")
-				.append("   COALESCE(aH.id, 0) AS 'autorizacionHistorica' ")
+				.append("   COALESCE(aI.glosa, '') AS 'glosaAutorizacionInterna', ")
+				.append("   COALESCE(aH.id, 0) AS 'autorizacionHistorica', ")
+				.append("   COALESCE(aH.glosa, '') AS 'glosaAutorizacionHistorica' ")
 				.append("FROM ejecuciones e  ")
 				.append(" LEFT OUTER JOIN bases b ON e.bases_id = b.id ")
 				.append(" LEFT OUTER JOIN maestro_bases m ON m.id = b.idMaestroBase ")
@@ -161,6 +163,13 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				}
 				
 				result.setLink(link+"?ruta="+result.getPais()+"\\"+rs.getString("dirName")+"\\"+result.getPanel()+"\\"+result.getGlosa()+".xlsx");
+				
+				if(!"".equals(rs.getString("glosaAutorizacionInterna"))){
+					result.setGlosaAutorizaCI(rs.getString("glosaAutorizacionInterna"));
+				}
+				if(!"".equals(rs.getString("glosaAutorizacionHistorica"))){
+					result.setGlosaAutorizaCH(rs.getString("glosaAutorizacionHistorica"));
+				}
 
 				lista.put(k, result);
 				k++;
