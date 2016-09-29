@@ -7,17 +7,26 @@
 	  http://www.springframework.org/schema/tx 
 	  http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
+	<bean id="propertyConfigurer" 
+	 class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="location">
+	       <value>file:///C:/Powrview/Temp/properties/kantar-consistencia.properties</value>
+	    </property>
+	</bean>
+
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		
-<!-- 		<property name="url" value="jdbc:mysql://192.168.2.12:3306/consistenciadb" />	 -->
-<!-- 		<property name="username" value="root" /> -->
-<!-- 		<property name="password" value="root" /> -->
-		
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/consistenciadb" />	
-		<property name="username" value="root" />
-		<property name="password" value="hal9000" />
+		<property name="url">
+	         <value>${jdbc.url}</value>
+	    </property>
+	    <property name="username">
+	         <value>${jdbc.user}</value>
+	    </property>
+	    <property name="password">
+	         <value>${jdbc.password}</value>
+	    </property>
 		
 	</bean>
 	
@@ -80,4 +89,9 @@
 	<bean id="MotorDao" class="cl.signosti.kantar.consistencia.dao.MotorDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-</beans>
+	<bean id="AutorizacionesDao" class="cl.signosti.kantar.consistencia.dao.AutorizacionesDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="PeriodosDao" class="cl.signosti.kantar.consistencia.dao.PeriodosDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean></beans>

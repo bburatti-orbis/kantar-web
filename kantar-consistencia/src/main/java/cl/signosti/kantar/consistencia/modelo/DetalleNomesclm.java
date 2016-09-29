@@ -5,12 +5,14 @@ public class DetalleNomesclm {
 	String nivel;
 	String totalInformado;
 	String totalCalculado;
+	String diferencia;
 	String estado;
 	String nomenclatura;
 	String tipo_nomencl;
 	String fecha;
 	String base;
 	String pais;
+	String glosa;
 
 	public String getLinea() {
 		return linea;
@@ -42,6 +44,14 @@ public class DetalleNomesclm {
 
 	public void setTotalCalculado(String totalCalculado) {
 		this.totalCalculado = totalCalculado;
+	}
+
+	public String getDiferencia() {
+		return diferencia;
+	}
+
+	public void setDiferencia(String diferencia) {
+		this.diferencia = diferencia;
 	}
 
 	public String getEstado() {
@@ -90,6 +100,14 @@ public class DetalleNomesclm {
 
 	public void setPais(String pais) {
 		this.pais = pais;
+	}
+
+	public String getGlosa() {
+		return glosa;
+	}
+
+	public void setGlosa(String glosa) {
+		this.glosa = glosa;
 	}
 
 }

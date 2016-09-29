@@ -2,16 +2,20 @@ package cl.signosti.kantar.consistencia.modelo;
 
 public class Basesm {
 	int id;
+	String panel;
 	String glosa;
 	String categoria;
 	String fechaultimoproceso;
 	int clienteid;
 	int paisid;
+	int periodoid;
 	String nombreCliente;
 	int estado;
 	String fechamod;
 	int coduser;
 	String correo;
+	
+	private MaestroBase maestroBase = null;
 
 	public int getId() {
 		return id;
@@ -19,6 +23,14 @@ public class Basesm {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getPanel() {
+		return panel;
+	}
+
+	public void setPanel(String panel) {
+		this.panel = panel;
 	}
 
 	public String getGlosa() {
@@ -61,6 +73,14 @@ public class Basesm {
 		this.paisid = paisid;
 	}
 
+	public int getPeriodoid() {
+		return periodoid;
+	}
+
+	public void setPeriodoid(int periodoid) {
+		this.periodoid = periodoid;
+	}
+
 	public String getNombreCliente() {
 		return nombreCliente;
 	}
@@ -99,6 +119,14 @@ public class Basesm {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	public MaestroBase getMaestroBase() {
+		return maestroBase;
+	}
+
+	public void setMaestroBase(MaestroBase maestroBase) {
+		this.maestroBase = maestroBase;
 	}
 
 }

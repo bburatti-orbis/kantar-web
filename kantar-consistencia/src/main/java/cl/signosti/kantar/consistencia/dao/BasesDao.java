@@ -13,10 +13,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.mysql.jdbc.Statement;
-
 import cl.signosti.kantar.consistencia.modelo.Basesm;
-
+import cl.signosti.kantar.consistencia.utils.Close;
 
 public class BasesDao extends JdbcDaoSupport implements Serializable {
 
@@ -30,7 +28,6 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 
 		List<Basesm> base = new ArrayList<Basesm>();
 		String sql = "SELECT * FROM Bases where Clientes_id=" + cod;
-
 
 		try {
 			conn = getDataSource().getConnection();
@@ -51,33 +48,15 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" , e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-
 		}
+
 
 		return base;
 	}
@@ -88,13 +67,14 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		PreparedStatement pre = null;
 
 		List<Basesm> base = new ArrayList<Basesm>();
-		String sql = "SELECT * FROM Bases a ,Clientes b where a.Paises_id="
-				+ cod + " and a.Clientes_id=b.id";
-		 System.out.println(sql);
+		String sql = "SELECT * "
+				+ "FROM Bases a ,Clientes b "
+				+ "WHERE a.Paises_id=? AND a.Clientes_id=b.id";
 
 		try {
 			conn = getDataSource().getConnection();
 			pre = conn.prepareStatement(sql);
+			pre.setInt(1, cod);
 			rs = pre.executeQuery();
 
 			while (rs.next()) {
@@ -111,31 +91,12 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -150,13 +111,12 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 
-		String sql = "INSERT INTO bases(" + " glosa," + "Estados_id,"
-				+ "fechaDeModificacion," + "Usuarios_id," + "Paises_id) "
-				+ "values (?,?,?,?,?)";
+		String sql = "INSERT INTO bases(" + " glosa," + "Estados_id," + "fechaDeModificacion," + "Usuarios_id,"
+				+ "Paises_id) " + "values (?,?,?,?,?)";
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, b.getGlosa());
 			pre.setInt(2, 1);
 			pre.setString(3, b.getFechamod());
@@ -170,31 +130,12 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -227,31 +168,12 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -260,14 +182,17 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 
 	}
 
-	public Basesm getbase(int cod) throws SQLException {
+	public Basesm getBase(int cod) throws SQLException {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement pre = null;
-		Basesm entidad = new Basesm();
+		Basesm base = new Basesm();
 
-		String sql = "SELECT a.glosa as base, b.email as correo FROM Bases a ,usuarios b where a.id=? and b.id=a.usuarios_id";
-		 System.out.println(sql);
+		String sql = "SELECT b.*, u.email as correo "
+				+ "FROM Bases b "
+					+ "LEFT JOIN usuarios u "
+					+ "ON u.id=b.usuarios_id "
+				+ "WHERE b.id=?";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -276,45 +201,32 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			rs = pre.executeQuery();
 
 			while (rs.next()) {
-
-				entidad.setGlosa(rs.getString("base"));
-				entidad.setCorreo(rs.getString("correo"));
-
+				base.setPanel(rs.getString("panel"));
+				base.setCategoria(rs.getString("categoria"));
+				base.setClienteid(rs.getInt("clientes_id"));
+				base.setCoduser(rs.getInt("usuarios_id"));
+				base.setCorreo(rs.getString("correo"));
+				base.setEstado(rs.getInt("estados_id"));
+				base.setGlosa(rs.getString("glosa"));
+				base.setId(rs.getInt("id"));
+				base.setPaisid(rs.getInt("paises_id"));
+				base.setPeriodoid(rs.getInt("periodos_id"));
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
 
-		return entidad;
+		return base;
 	}
-	
+
 	public List<Basesm> getbases(int cod) throws SQLException {
 		Connection conn = null;
 		ResultSet rs = null;
@@ -322,13 +234,12 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 
 		List<Basesm> base = new ArrayList<Basesm>();
 		String sql = "SELECT * FROM Bases  where Paises_id=?";
-		 System.out.println(sql);
 
 		try {
 			conn = getDataSource().getConnection();
 			pre = conn.prepareStatement(sql);
 			pre.setInt(1, cod);
-			
+
 			rs = pre.executeQuery();
 
 			while (rs.next()) {
@@ -344,145 +255,111 @@ public class BasesDao extends JdbcDaoSupport implements Serializable {
 			}
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
 
 		return base;
 	}
-	
-public void setconjunto(int cod,int id) {
-		
+
+	public void setconjunto(int cod, int id) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 
-
 		String sql = "update Bases set Conjunto_id=? where id=? ";
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.setInt(2, id);
 			pre.executeUpdate();
-			
-			
 
 		} catch (Exception e) {
-			 logger.error("Error, causa:" , e);
+			logger.error("Error, causa:", e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+		}
+
+	}
+
+	public List<Basesm> getbasesconjunto(int cod) throws SQLException {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement pre = null;
+
+		List<Basesm> base = new ArrayList<Basesm>();
+		String sql = "SELECT * FROM Bases  where Paises_id=? and conjunto_id is null";
+
+		try {
+			conn = getDataSource().getConnection();
+			pre = conn.prepareStatement(sql);
+			pre.setInt(1, cod);
+
+			rs = pre.executeQuery();
+
+			while (rs.next()) {
+				Basesm entidad = new Basesm();
+				entidad.setId(rs.getInt("id"));
+				entidad.setGlosa(rs.getString("glosa"));
+				entidad.setCategoria(rs.getString("categoria"));
+				// entidad.setFechaultimoproceso(rs.getString("fechaUltProceso"));
+				entidad.setClienteid(rs.getInt("Clientes_id"));
+				entidad.setPaisid(rs.getInt("Paises_id"));
+				base.add(entidad);
+
 			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-	 logger.error("Error, causa:" , e);
-					 
-				}
+
+		} catch (Exception e) {
+			logger.error("Error, causa:", e);
+		} finally {
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
 
-
+		return base;
 	}
-public List<Basesm> getbasesconjunto(int cod) throws SQLException {
-	Connection conn = null;
-	ResultSet rs = null;
-	PreparedStatement pre = null;
 
-	List<Basesm> base = new ArrayList<Basesm>();
-	String sql = "SELECT * FROM Bases  where Paises_id=? and conjunto_id is null";
-	 System.out.println(sql);
+	public void delete(int id) {
+		Connection conn = null;
+		PreparedStatement pre = null;
 
-	try {
-		conn = getDataSource().getConnection();
-		pre = conn.prepareStatement(sql);
-		pre.setInt(1, cod);
+		String sql = "DELETE FROM Bases WHERE id="+id;
+
+		try {
+			conn = getDataSource().getConnection();
+			pre = conn.prepareStatement(sql);
+
+			pre.executeUpdate();
+
+
+		} catch (Exception e) {
+			logger.error("Error, causa:", e);
+		} finally {
+			try{
+				Close.all(pre, conn);
+			} catch (Exception e){
+				// 
+			}
+
+		}
 		
-		rs = pre.executeQuery();
-
-		while (rs.next()) {
-			Basesm entidad = new Basesm();
-			entidad.setId(rs.getInt("id"));
-			entidad.setGlosa(rs.getString("glosa"));
-			entidad.setCategoria(rs.getString("categoria"));
-//			entidad.setFechaultimoproceso(rs.getString("fechaUltProceso"));
-			entidad.setClienteid(rs.getInt("Clientes_id"));
-			entidad.setPaisid(rs.getInt("Paises_id"));
-			base.add(entidad);
-
-		}
-
-	} catch (Exception e) {
-		 logger.error("Error, causa:" , e);
-	} finally {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
- logger.error("Error, causa:" , e);
-			}
-		}
-		if (pre != null) {
-			try {
-				pre.close();
-			} catch (SQLException e) {
- logger.error("Error, causa:" , e);
-			}
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
- logger.error("Error, causa:" , e);
-			}
-		}
-
 	}
-
-	return base;
-}
 
 }

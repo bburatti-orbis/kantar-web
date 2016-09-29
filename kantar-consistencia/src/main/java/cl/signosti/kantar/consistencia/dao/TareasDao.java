@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import cl.signosti.kantar.consistencia.modelo.Estado;
 import cl.signosti.kantar.consistencia.modelo.Tareasm;
+import cl.signosti.kantar.consistencia.utils.Close;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
-import com.mysql.jdbc.Statement;
 
 public class TareasDao extends JdbcDaoSupport implements Serializable{
 
@@ -31,7 +30,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			subtareas(marca);
 		}
 		else{
-		String sql = "Insert into Tareas (nombre,idresponsable,plazo,tiempo,idconjunto,tipo_calendario,proyecto_id,Estados_id,frecuencia,delay,tiempoDelay,Tiempofrecuencia) values (?,?,?,?,?,?,?,1,?,?,?,?)";
+		String sql = "INSERT INTO Tareas (nombre, idresponsable, plazo, tiempo, idconjunto, tipo_calendario, proyecto_id, Estados_id, frecuencia, delay, tiempoDelay, Tiempofrecuencia) VALUES (?,?,?,?,?,?,?,6,?,?,?,?)";
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -39,12 +38,12 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			pre.setString(1, marca.getNombre());
 			pre.setInt(2, marca.getIdresponsable());
 			pre.setInt(3, marca.getPlazo());
-			pre.setInt(4, Integer.parseInt(marca.getTiempo()));
+			pre.setObject(4, marca.getTiempo());
 //			pre.setInt(5, marca.getIdantesesora()); BBM	
 			
 			if(marca.getIdconjunto()==null){
@@ -58,7 +57,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			pre.setInt(7, marca.getProyecto_id());
 			pre.setInt(8, marca.getFrecuencia());
 			pre.setInt(9, marca.getDelay());
-			pre.setString(10, marca.getTiempodelay());
+			pre.setObject(10, marca.getTiempodelay());
 			pre.setString(11, marca.getTiempofrecuencia());
 			
 			pre.executeUpdate();
@@ -72,31 +71,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		
 		}
@@ -109,24 +88,25 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 		List<Tareasm> consistencia = new ArrayList<Tareasm>();
-		String sql = "select "+  
+		String sql = "SELECT "+  
 				"a.id,"+
-				"a.nombre  as 'nom',"+
+				"a.nombre  AS 'nom',"+
 				"a.plazo,"+
-				"a.tiempo,"+
-				"b.nombre as 'encargado',"+
+				"COALESCE(t.descripcion, 'N/A') AS tiempo,"+
+				"b.nombre AS 'encargado',"+
 				"b.apellido,"+
 				"a.idantecesora,"+
 				"c.idP "+
 			"FROM tareas a "+
-			    "LEFT OUTER JOIN Usuarios b on b.id=a.idresponsable "+
-				"LEFT OUTER JOIN tareastareas c on c.ids=a.id "+
-			"where  a.proyecto_id=? and  a.Estados_id=1"
+			    "LEFT OUTER JOIN Usuarios b ON b.id=a.idresponsable "+
+				"LEFT OUTER JOIN tareastareas c ON c.ids=a.id "+
+				"LEFT OUTER JOIN tiempo t ON t.id=a.tiempo "+
+			"WHERE  a.proyecto_id=? AND  a.Estados_id=1"
 			+ " ORDER BY a.id ASC";
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 
 			rs = pre.executeQuery();
@@ -137,7 +117,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				nom.setId(rs.getInt("id"));
 				nom.setNombre(rs.getString("nom"));
 				nom.setPlazo(rs.getInt("plazo"));
-				nom.setTiempo(rs.getString("tiempo"));
+				nom.setTiempo(rs.getInt("tiempo"));
 				
 				nom.setNomencargado(rs.getString("encargado")+" "+rs.getString("apellido"));
 				Integer[] ids= new Integer[1];
@@ -151,31 +131,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return consistencia;
 
@@ -187,11 +147,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 		List<Tareasm> consistencia = new ArrayList<Tareasm>();
-		String sql = "select a.id, a.nombre  as 'nom', a.plazo, a.tiempo,b.nombre as 'encargado',b.apellido, a.idantecesora from tareas a, Usuarios b where b.id=a.idresponsable and  a.proyecto_id=? and Estados_id=1 and a.id <> ?";
+		String sql = "SELECT a.id, a.nombre AS 'nom', a.plazo, a.tiempo, b.nombre AS 'encargado', b.apellido, a.idantecesora FROM tareas a, Usuarios b WHERE b.id=a.idresponsable AND  a.proyecto_id=? AND Estados_id=1 AND a.id <> ?";
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.setInt(2, codtarea);
 
@@ -203,7 +163,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				nom.setId(rs.getInt("id"));
 				nom.setNombre(rs.getString("nom"));
 				nom.setPlazo(rs.getInt("plazo"));
-				nom.setTiempo(rs.getString("tiempo"));
+				nom.setTiempo(rs.getInt("tiempo"));
 				nom.setNomencargado(rs.getString("encargado")+" "+rs.getString("apellido"));
 //				nom.setIdantesesora(rs.getInt("idantecesora")); //BBM
 				consistencia.add(nom);
@@ -213,31 +173,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return consistencia;
 
@@ -245,7 +185,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 	
 	
 	
-		public int setestado(int cod) {
+	public int setestado(int cod) {
 		
 		int id = 0;
 		Connection conn = null;
@@ -253,59 +193,39 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		PreparedStatement pre = null;
 
 
-		String sql = "update tareas set Estados_id=2 where id=? ";
+		String sql = "UPDATE tareas SET Estados_id=2 WHERE id=? ";
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setInt(1, cod);
 			pre.executeUpdate();
 
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return id;
 
 	}
 		
-		public Tareasm gettareax(int cod) throws SQLException {
+	public Tareasm gettareax(int cod) throws SQLException {
 
 			Connection conn = null;
 			ResultSet rs = null;
 			PreparedStatement pre = null;
 		
-			String sql = "select * from tareas where id=?";
+			String sql = "SELECT * FROM tareas WHERE id=?";
 			Tareasm nom = new Tareasm();
 
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setInt(1, cod);
 
 				rs = pre.executeQuery();
@@ -317,9 +237,9 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					nom.setPlazo(rs.getInt("plazo"));
 					nom.setIdresponsable(rs.getInt("idresponsable"));
 					nom.setDelay(rs.getInt("delay"));
-					nom.setTiempo(rs.getString("tiempo"));
+					nom.setTiempo(rs.getInt("tiempo"));
 					nom.setFrecuencia(rs.getInt("frecuencia"));
-					nom.setTiempodelay(rs.getString("tiempoDelay"));
+					nom.setTiempodelay(rs.getInt("tiempoDelay"));
 //					nom.setIdantesesora(rs.getInt("idantecesora")); BBM
 					nom.setIdconjunto(rs.getInt("idconjunto"));
 					nom.setTipo_calendario(rs.getInt("tipo_calendario"));
@@ -340,31 +260,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			} catch (Exception e) {
 				 logger.error("Error, causa:" , e);
 			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
 
+				}
 			}
 			return nom;
 
@@ -376,12 +276,12 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 			ResultSet rs = null;
 			PreparedStatement pre = null;
 		
-			String sql = "select * from tareas_ejecucion where id=?";
+			String sql = "SELECT * FROM tareas_ejecucion WHERE id=?";
 			Tareasm nom = null;
 
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setInt(1, cod);
 
 				rs = pre.executeQuery();
@@ -395,7 +295,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					nom.setPlazo(rs.getInt("plazo"));
 					nom.setIdresponsable(rs.getInt("idresponsable"));
 					nom.setDelay(rs.getInt("delay"));
-					nom.setTiempo(rs.getString("tiempo"));
+					nom.setTiempo(rs.getInt("tiempo"));
 					nom.setFrecuencia(rs.getInt("frecuencia"));
 //					nom.setTiempodelay(rs.getString("tiempoDelay"));
 //					nom.setIdantesesora(rs.getInt("idantecesora")); BBM
@@ -419,77 +319,57 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				 logger.error("Error, causa:" , e);
 				 e.printStackTrace();
 			} finally {
-				this.cerrarConexion(rs, pre, conn);
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return nom;
 
 		}
 		
-		public int setupdatetarea(Tareasm marca) {
-			String sql = "update   Tareas set nombre=?,idresponsable=?,plazo=?,tiempo=?,idantecesora=?,idconjunto=?,tipo_calendario=?,Estados_id=1,frecuencia=?,delay=?,tiempodelay=? where id=?";
+		public int setUpdateTarea(Tareasm marca) {
+			String sql = "UPDATE Tareas SET nombre=?, idresponsable=?, plazo=?, tiempo=?, idantecesora=?, idconjunto=?, tipo_calendario=?, Estados_id=1, frecuencia=?, delay=?, tiempodelay=? WHERE id=?";
 			Connection conn = null;
 			ResultSet rs = null;
 			PreparedStatement pre = null;
 			int devuelta = 0;
 			try {
 				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 				pre.setString(1, marca.getNombre());
 				pre.setInt(2, marca.getIdresponsable());
 				pre.setInt(3, marca.getPlazo());
-				pre.setString(4, marca.getTiempo());
-//				pre.setInt(5, marca.getIdantesesora()); //
+				pre.setObject(4, marca.getTiempo());
+				pre.setObject(5, marca.getIdantesesora()[0]); 
 				if( marca.getIdconjunto()==null){
 					pre.setString(6, null);
-				}
-				else
-				{
+				} else {
 					pre.setInt(6, marca.getIdconjunto());
 				}
 				
 				pre.setInt(7, marca.getTipo_calendario());
 				pre.setInt(8, marca.getFrecuencia());
 				pre.setInt(9, marca.getDelay());
-				pre.setString(10, marca.getTiempodelay());
+				pre.setObject(10, marca.getTiempodelay());
 				pre.setInt(11, marca.getId());
 				pre.executeUpdate();
 				rs = pre.getGeneratedKeys();
 				if (rs.next()) {
 					devuelta = rs.getInt(1);
-
 				}
 
 			} catch (Exception e) {
 				 logger.error("Error, causa:" , e);
 			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
+				try {
+					Close.all(rs, pre, conn);
+				} catch (SQLException e) {
 
+				}
 			}
 			return devuelta;
-
 		}
 
 		public List<Tareasm> getEjecutarProyectoXUserAndProyecto(int idUser, int proyectoId, Date inicio, Date fin) {
@@ -562,7 +442,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					t.setNombre(r.getString("tarea"));
 					t.setIdresponsable(r.getInt("idresponsable"));
 					t.setPlazo(r.getInt("plazo"));
-					t.setTiempo(r.getString("tiempo"));
+					t.setTiempo(r.getInt("tiempo"));
 //					t.setIdantesesora(r.getInt("idantecesora")); BBM
 					t.setIdconjunto(r.getInt("idconjunto"));
 					t.setTipo_calendario(r.getInt("tipo_calendario"));
@@ -587,39 +467,16 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			
 			return lt;
 		}
 		
-		public void cerrarConexion(ResultSet rs, PreparedStatement pre, Connection conn){
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-		}
-
 		public Estado getEstado(int estadosId) {
 			Estado estado = null;
 			String sql = "SELECT  `id`,  `glosa` FROM `estados` where id = ?;";
@@ -643,7 +500,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return estado;
 		}
@@ -671,61 +532,15 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				e.printStackTrace();
 				 logger.error("Error, causa:" , e);
 			} finally {
-				cerrarConexion(r, pre, conn);
+				try {
+					Close.all(pre, conn);
+				} catch (SQLException e) {
+
+				}
 			}
 			return estado;
 		}
 
-		
-		
-		private void elimina(int antecesora){
-			String sql = "DELETE FROM tareastareas WHERE idP=?";
-
-			Connection conn = null;
-			ResultSet rs = null;
-			PreparedStatement pre = null;
-			
-			try {
-				conn = getDataSource().getConnection();
-				pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				
-					pre.setInt(1,antecesora);
-					
-					pre.executeUpdate();
-				
-				
-			} catch (Exception e) {
-				 logger.error("Error, causa:" , e);
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (pre != null) {
-					try {
-						pre.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						 logger.error("Error, causa:" ,
-						 e);
-					}
-				}
-
-			}
-			
-		}
-		
 	private void subtareas(Tareasm tarea){
 		
 		String sql;
@@ -742,7 +557,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 				int at=Integer.parseInt(PropertiesUtil.getInstance().recuperaValor("AT"));
 				sql = "Insert into Tareas (nombre,idresponsable,plazo,tiempo,idconjunto,tipo_calendario,proyecto_id,Estados_id,frecuencia,delay,tiempoDelay) values (?,?,?,?,?,?,?,?,1,?,?)";
 				for(int i=0;i<3;i++){
-					pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+					pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 					
 					pre.setInt(2, tarea.getIdresponsable());
 					if(i==0){
@@ -758,7 +573,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 						pre.setInt(3, at);	
 					}
 					
-					pre.setString(4, tarea.getTiempo());				
+					pre.setObject(4, tarea.getTiempo());				
 					if(tarea.getIdconjunto()==null){
 						pre.setString(5, null);
 					}
@@ -770,7 +585,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 					pre.setInt(7, tarea.getProyecto_id());
 					pre.setInt(8, tarea.getFrecuencia());
 					pre.setInt(9, tarea.getDelay());
-					pre.setString(10, tarea.getTiempodelay());
+					pre.setObject(10, tarea.getTiempodelay());
 					pre.executeUpdate();
 					rs = pre.getGeneratedKeys();
 					if (rs.next()) {
@@ -791,31 +606,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 	}
 	
@@ -829,7 +624,7 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 				pre.setInt(1,antecesora);
 				pre.setInt(2,sucesora);
@@ -840,31 +635,11 @@ public class TareasDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		
 	}

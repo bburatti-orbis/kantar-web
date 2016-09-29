@@ -7,14 +7,14 @@ public class Tareasm {
 	String nombre;
 	int idresponsable;
 	int plazo;
-	String tiempo;
+	java.lang.Integer tiempo;
 	java.lang.Integer[] idantesesora;
 	java.lang.Integer  idconjunto;
 	int tipo_calendario;
 	int proyecto_id;
 	int delay;
 	int frecuencia;
-	String tiempodelay;
+	java.lang.Integer tiempodelay;
 	String tiempofrecuencia;
 	private boolean automatica;
 	
@@ -177,10 +177,10 @@ public class Tareasm {
 	public void setPlazo(int plazo) {
 		this.plazo = plazo;
 	}
-	public String getTiempo() {
+	public java.lang.Integer getTiempo() {
 		return tiempo;
 	}
-	public void setTiempo(String tiempo) {
+	public void setTiempo(java.lang.Integer tiempo) {
 		this.tiempo = tiempo;
 	}
 	public Integer[] getIdantesesora() {
@@ -226,10 +226,10 @@ public class Tareasm {
 	public void setFrecuencia(int frecuencia) {
 		this.frecuencia = frecuencia;
 	}
-	public String getTiempodelay() {
+	public java.lang.Integer getTiempodelay() {
 		return tiempodelay;
 	}
-	public void setTiempodelay(String tiempodelay) {
+	public void setTiempodelay(java.lang.Integer tiempodelay) {
 		this.tiempodelay = tiempodelay;
 	}
 	public String getTiempofrecuencia() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import cl.signosti.kantar.consistencia.dao.AutorizacionesDao;
 import cl.signosti.kantar.consistencia.dao.BasesDao;
 import cl.signosti.kantar.consistencia.dao.CicloDao;
 import cl.signosti.kantar.consistencia.dao.ClienteDao;
@@ -18,6 +19,7 @@ import cl.signosti.kantar.consistencia.dao.ReportesDao;
 import cl.signosti.kantar.consistencia.dao.TareasDao;
 import cl.signosti.kantar.consistencia.dao.UsuariosDao;
 import cl.signosti.kantar.consistencia.dao.PaisesDao;
+import cl.signosti.kantar.consistencia.dao.PeriodosDao;
 import cl.signosti.kantar.consistencia.dao.EjecucionesDao;
 import cl.signosti.kantar.consistencia.dao.KpiDao;
 import cl.signosti.kantar.consistencia.dao.BitacoraDao;
@@ -100,9 +102,14 @@ public class LocatorDao implements Serializable {
 	public static KpiDao getKpi() {
 		return (KpiDao) context.getBean("KpiDao");
 	}
-	
 	public static MotorDao getMotorDao() {
 		return (MotorDao) context.getBean("MotorDao");
+	}
+	public static AutorizacionesDao getAutorizacionesDao() {		return (AutorizacionesDao) context.getBean("AutorizacionesDao");
+	}
+	
+	public static PeriodosDao getPeriodosDao() {
+		return (PeriodosDao) context.getBean("PeriodosDao");
 	}
 
 }

@@ -25,53 +25,63 @@ import cl.signosti.kantar.consistencia.modelo.ListadoProyectos;
 import cl.signosti.kantar.consistencia.modelo.ReportNomenm;
 import cl.signosti.kantar.consistencia.modelo.ReportePerformance;
 import cl.signosti.kantar.consistencia.modelo.ReportesRevisarProyecto;
-import cl.signosti.kantar.consistencia.modelo.ResutadoGeneralm;
+import cl.signosti.kantar.consistencia.modelo.ResultadoGeneralm;
+import cl.signosti.kantar.consistencia.utils.Close;
 import cl.signosti.kantar.consistencia.utils.Funcionesvarias;
 import cl.signosti.kantar.consistencia.utils.PropertiesUtil;
 
 public class ReportesDao extends JdbcDaoSupport implements Serializable{
 
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -483909151431734110L;
 	private static final Logger logger = Logger.getLogger(ReportesDao.class);
 
-	public Map<Integer, ResutadoGeneralm> getResultGeneral(int inc, int limit, String desde, String hasta) {
+	public Map<Integer, ResultadoGeneralm> getResultGeneral(int inc, int limit, String desde, String hasta) {
 
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement pre = null;
 		String link= PropertiesUtil.getInstance().recuperaValor("ruta_informes");
-		Map<Integer, ResutadoGeneralm> lista = new HashMap<Integer, ResutadoGeneralm>();
+		Map<Integer, ResultadoGeneralm> lista = new HashMap<Integer, ResultadoGeneralm>();
 
-		String sql = "SELECT p.nombre,"
-				   +"b.glosa,"
-				   +"COALESCE(b.categoria, 'No Asignada') AS 'descripcion',"
-				   +"COALESCE(c.nombre,'Cliente no asignado') AS 'cliente',"
-				   +"u.nombre AS 'nom',"
-				   +"u.apellido,"
-				   +"r.periodo,"
-				   +"b.id AS 'idbase',"
-				   +"b.estadoCI AS 'CI',"
-				   +"b.estadoCH AS 'CH',"
-				   +"e.created_at AS 'fecha_inicio',"
-				   +"e.fechaTermino AS 'fecha_termino' ,"
-				   +"e.estadoCInterna,"
-				   +"e.estadoCHistorica "
-			+"FROM ejecuciones e " 
-                 +"LEFT OUTER JOIN bases b ON e.bases_id = b.id "
-                 +"LEFT OUTER JOIN paises p ON b.paises_id = p.id "
-				 +"LEFT OUTER JOIN periodos r ON r.id = b.periodos_id "
-  				 +"LEFT OUTER JOIN usuarios u ON b.usuarios_id = u.id "
-                 +"LEFT OUTER JOIN clientes c ON b.clientes_id = c.id "
-  			+"WHERE e.fechaTermino >= ? && e.fechaTermino <= ? "
-            +"ORDER BY e.fechaTermino DESC "
-            +"LIMIT ?,?";
+		String sql = new StringBuilder()
+				.append("SELECT p.nombre as pais, ")
+				.append("   m.glosa, ")
+				.append("   COALESCE(m.categoria, 'No Asignada') AS 'descripcion', ")
+				.append("   COALESCE(c.nombre, 'No asignado') AS 'cliente', ")
+				.append("   CONCAT_WS(' ', encargado.nombre, encargado.apellido) AS 'encargado', ")
+				.append("   CONCAT_WS(' ', ejecutivo.nombre, ejecutivo.apellido) AS 'ejecutivo', ")
+				.append("   r.dirName as 'dirName', ")
+				.append("   r.periodo as 'periodo', ")
+				.append("   b.id AS 'idbase', ")
+				.append("   b.estadoCI AS 'resultadoCI', ")
+				.append("   b.estadoCH AS 'resultadoCH', ")
+				.append("   b.panel AS 'panel', ")
+				.append("   e.created_at AS 'fecha_inicio', ")
+				.append("   COALESCE(e.fechaTermino, e.updated_at) AS 'fecha_termino', ")
+				.append("   e.estadoCInterna, ")
+				.append("   e.estadoCHistorica, ")
+				.append("   e.id, ")
+				.append("   COALESCE(aI.id, 0) AS 'autorizacionInterna', ")
+				.append("   COALESCE(aI.glosa, '') AS 'glosaAutorizacionInterna', ")
+				.append("   COALESCE(aH.id, 0) AS 'autorizacionHistorica', ")
+				.append("   COALESCE(aH.glosa, '') AS 'glosaAutorizacionHistorica' ")
+				.append("FROM ejecuciones e  ")
+				.append(" LEFT OUTER JOIN bases b ON e.bases_id = b.id ")
+				.append(" LEFT OUTER JOIN maestro_bases m ON m.id = b.idMaestroBase ")
+				.append(" LEFT OUTER JOIN periodos r ON r.id = b.periodos_id ")
+				.append(" LEFT OUTER JOIN usuarios encargado ON encargado.id = m.idEncargado ")
+				.append(" LEFT OUTER JOIN usuarios ejecutivo ON ejecutivo.id = m.idEjecutivo ")
+				.append(" LEFT OUTER JOIN clientes c ON c.id = m.idCliente ")
+				.append(" LEFT OUTER JOIN autorizadas aI ON (aI.Ejecuciones_id = e.id && aI.proceso = 0) ")
+				.append(" LEFT OUTER JOIN autorizadas aH ON (aH.Ejecuciones_id = e.id && aH.proceso = 1) ")
+				.append(" LEFT OUTER JOIN paises p ON p.id = b.Paises_id ")
+				.append("WHERE e.updated_at >= ? && e.updated_at <= ? ")
+				.append("ORDER BY e.updated_at DESC ")
+				.append("LIMIT ?,? ")
+				.toString();
 
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 			conn = getDataSource().getConnection();
 			pre = conn.prepareStatement(sql);
 			Date parsed = format.parse(desde);
@@ -84,49 +94,82 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 
 			int k = 0;
 			while (rs.next()) {
-				ResutadoGeneralm result = new ResutadoGeneralm();
+				ResultadoGeneralm result = new ResultadoGeneralm();
 
-				result.setNombre(rs.getString("nombre"));
+				result.setPais(rs.getString("pais"));
 				result.setGlosa(rs.getString("glosa"));
 				result.setDescripcion(rs.getString("descripcion"));
 				result.setCliente(rs.getString("cliente"));
-				result.setFecha_ini(rs.getString("fecha_inicio"));
-				result.setFecha_ter(rs.getString("fecha_termino"));
+				result.setEncargado(rs.getString("encargado"));
+				result.setEjecutivo(rs.getString("ejecutivo"));
 				result.setPeriodo(rs.getString("periodo"));
 				result.setIdBases(rs.getString("idbase"));
-				int ci=rs.getInt("estadoCInterna");
-				int ch= rs.getInt("estadoCHistorica");
+				result.setFecha_ini(rs.getString("fecha_inicio"));
+				result.setFecha_ter(rs.getString("fecha_termino"));
+				result.setId(rs.getString("id"));
+				result.setPanel(rs.getString("panel"));
+				int estadoCH = rs.getInt("estadoCHistorica");
+				int estadoCI = rs.getInt("estadoCInterna");				
 				
+				String rsltCI = null;
+				if(estadoCI == 100) {
+					rsltCI = "Por Procesar";
+				} else if(estadoCI == 101) {
+					rsltCI = "En Proceso";
+				} else if (estadoCI >= 102){
+					int resultadoCI = rs.getInt("resultadoCI");
+					if(resultadoCI == 4){ // Resultó con error
+						rsltCI = (rs.getInt("autorizacionInterna") != 0?"AUTORIZADA":"ERRONEA");
+					} else {
+						rsltCI = "OK";
+					}
+				}
+				result.setEstadoCI(rsltCI);
 				
-				String estadoCI = rs.getString("CI");
-				if(estadoCI.equals("4")){
-					result.setCI("ERRONEA");	
+				String rsltCH = null;
+				if (estadoCH == 100){
+					rsltCH = "Por Procesar";
+				} else if(estadoCH < 104) {
+					rsltCH = "PowrView";
+				} else if(estadoCH < 106) {
+					rsltCH = "rptWriter";
+				} else if(estadoCH < 107) {
+					rsltCH = "Por Conciliar";
+				} else if(estadoCH < 108) {
+					rsltCH = "Conciliando";
+				} else if(estadoCH >= 108) {
+					int resultadoCH = rs.getInt("resultadoCH");
+					if (resultadoCH == 4) { // Resultó con error
+						rsltCH = (rs.getInt("autorizacionHistorica") != 0?"AUTORIZADA":"ERRONEA");
+					} else if (resultadoCH == 5) {
+						rsltCH = (rs.getInt("autorizacionHistorica") != 0?"AUTORIZADA":"NO APLICA");
+					} else {
+						rsltCH = "OK";
+					}
 				}
-				else{
-					result.setCI("OK");
-				}
-				String estadoCH = rs.getString("CH");
-				if(estadoCH.equals("4")){
-					result.setCH("ERRONEA");	
-				}
-				else{
-					result.setCH("OK");
-				}
+				result.setEstadoCH(rsltCH);
 									
-				
-				if(ci == 103 && ch == 109){
-					result.setEstado("ENTREGAR");
-				} else if(ci==102 && ch==108){
+				if(estadoCI == 103 && estadoCH == 109){
+					result.setEstado("ENTREGADA");
+				} else if(estadoCI == 102 && estadoCH == 108){
 					result.setEstado("TERMINADA");
-					if(!estadoCI.equals("4") || !estadoCH.equals("4")){
+					if("erronea".equalsIgnoreCase(result.getResultadoCI()) || "erronea".equalsIgnoreCase(result.getResultadoCH()) || "no aplica".equalsIgnoreCase(result.getResultadoCH())){
 						result.setEstado("REVISAR");
 					}
+				} else if(estadoCI == 100 && estadoCH == 100){
+					result.setEstado("POR PROCESAR");
 				} else {
 					result.setEstado("EN PROCESO");
 				}
-				result.setUsuario(rs.getString("nom")+ " "+ rs.getString("apellido"));
 				
-				result.setLink(link+"?ruta="+result.getNombre()+"\\"+result.getPeriodo()+"\\"+result.getGlosa()+"\\"+result.getGlosa()+".xlsx");
+				result.setLink(link+"?ruta="+result.getPais()+"\\"+rs.getString("dirName")+"\\"+result.getPanel()+"\\"+result.getGlosa()+".xlsx");
+				
+				if(!"".equals(rs.getString("glosaAutorizacionInterna"))){
+					result.setGlosaAutorizaCI(rs.getString("glosaAutorizacionInterna"));
+				}
+				if(!"".equals(rs.getString("glosaAutorizacionHistorica"))){
+					result.setGlosaAutorizaCH(rs.getString("glosaAutorizacionHistorica"));
+				}
 
 				lista.put(k, result);
 				k++;
@@ -136,29 +179,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -180,14 +204,16 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				+ "n.estadoCInterna AS 'estado',"
 				+ "p.nombre AS 'pais',"
 				+ "b.glosa AS 'base',"
+				+ "pe.dirName AS 'periodo',"
 				+ "n.id AS 'idnom' ,"
 				+ "DATE_FORMAT(e.fecha,'%Y-%m-%d' ) AS 'fecha',"
 				+ "COALESCE( (SELECT (SUM(valor)-SUM(sumaHijos)) FROM marcas WHERE estadoCInterna=4 AND Nomenclatura_id=n.id ),'0' ) AS diferencia "
-				+ "FROM bases b, ejecuciones e, nomenclaturas n , paises p "
+				+ "FROM bases b, ejecuciones e, nomenclaturas n , paises p, periodos pe "
 				+ "WHERE b.id=? "
 				+ "  AND n.bases_id=b.id "
 				+ "  AND p.id=b.Paises_id "
-				+ "  AND e.bases_id=b.id ";
+				+ "  AND e.bases_id=b.id "
+				+ "  AND pe.id=b.Periodos_id ";
 
 		try {
 			conn = getDataSource().getConnection();
@@ -202,17 +228,25 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 				result.setNomenclatura(rs.getString("nomesclatura"));
 				result.setTipo(rs.getString("tipo"));
 				int es=rs.getInt("estado");
-				if(es==3){
+				switch (es){
+				case(1):
+					result.setEstado("SIN PROCESAR");
+					break;
+				case(3):
 					result.setEstado("OK");
-				}
-				else if(es==4){
+					break;
+				case(4):
 					result.setEstado("ERRONEA");
+					break;
+				default:
+					result.setEstado("DESCONOCIDO");
 				}
 
 				result.setPais(rs.getString("pais"));
+				result.setPeriodo(rs.getString("periodo"));
 				result.setBase(rs.getString("base"));
 				result.setFecha(rs.getString("fecha"));
-				result.setDiferencia(rs.getString("diferencia"));
+				result.setDiferencia(String.format("%,d", rs.getInt("diferencia")).replace(',', '.'));
 				result.setId_nom(rs.getString("idnom"));
 
 				lista.put(k, result);
@@ -223,29 +257,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -266,6 +281,7 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 					"m.linea, "+
 					"m.nivel, "+
 					"m.valor AS total_informado, "+
+					"m.estadoCInterna, "+
 					"COALESCE( (m.sumaHijos), m.valor ) AS total_calculado, "+
 					"e.glosa AS estadoCI,"+
 					"n.glosa AS nomenclatura, "+
@@ -292,14 +308,21 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			while (rs.next()) {
 				DetalleNomesclm result = new DetalleNomesclm();
 
-				
+				result.setGlosa(rs.getString("glosa"));
 				result.setNivel(rs.getString("nivel"));
 				String n=fun.repeat(" ",rs.getInt("nivel"));
 				result.setLinea(n+rs.getString("linea"));
 				
-				result.setTotalInformado(rs.getString("total_informado"));
-				result.setTotalCalculado(rs.getString("total_calculado"));
 				result.setEstado(rs.getString("estadoCI"));
+				result.setTotalInformado(String.format("%,d", rs.getInt("total_informado")).replace(",","."));
+				if(rs.getInt("estadoCInterna") == 3){
+					result.setTotalCalculado(String.format("%,d", rs.getInt("total_informado")).replace(",", "."));
+					result.setDiferencia("0");
+				} else {
+					result.setTotalCalculado(String.format("%,d", rs.getInt("total_calculado")).replace(",", "."));
+					result.setDiferencia(String.format("%,d", rs.getInt("total_informado")-rs.getInt("total_calculado")).replace(",","."));
+				}
+				
 				result.setNomenclatura(rs.getString("nomenclatura"));
 				result.setTipo_nomencl(rs.getString("IT2"));
 				result.setFecha(rs.getString("fecha"));
@@ -314,29 +337,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -379,29 +383,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -448,29 +433,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -523,29 +489,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -591,29 +538,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -651,29 +579,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -754,29 +663,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -815,29 +705,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}
@@ -925,29 +796,10 @@ public class ReportesDao extends JdbcDaoSupport implements Serializable{
 			 logger.error("Error, causa:" , e);
 			 e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
+			try{
+				Close.all(rs, pre, conn);
+			} catch (Exception e){
+				// 
 			}
 
 		}

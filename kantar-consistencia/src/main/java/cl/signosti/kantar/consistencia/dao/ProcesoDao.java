@@ -9,10 +9,9 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-
 import cl.signosti.kantar.consistencia.modelo.Procesom;
+import cl.signosti.kantar.consistencia.utils.Close;
 
-import com.mysql.jdbc.Statement;
 
 public class ProcesoDao extends JdbcDaoSupport implements Serializable {
 
@@ -31,7 +30,7 @@ public class ProcesoDao extends JdbcDaoSupport implements Serializable {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, b.getFecha_inicio());
 			pre.setString(2, b.getMessureset());
 			pre.setInt(3, b.getEstado());
@@ -45,31 +44,11 @@ public class ProcesoDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 		return id;
 
@@ -86,7 +65,7 @@ public class ProcesoDao extends JdbcDaoSupport implements Serializable {
 
 		try {
 			conn = getDataSource().getConnection();
-			pre = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pre = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			pre.setString(1, fecha);
 			pre.setInt(2, cod);
 			pre.executeUpdate();
@@ -94,31 +73,11 @@ public class ProcesoDao extends JdbcDaoSupport implements Serializable {
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (pre != null) {
-				try {
-					pre.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					 logger.error("Error, causa:" ,
-					 e);
-				}
-			}
+			try {
+				Close.all(rs, pre, conn);
+			} catch (SQLException e) {
 
+			}
 		}
 
 	}

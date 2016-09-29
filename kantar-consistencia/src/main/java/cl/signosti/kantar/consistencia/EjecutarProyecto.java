@@ -28,9 +28,9 @@ import cl.signosti.kantar.consistencia.modelo.Tareasm;
 import cl.signosti.kantar.consistencia.modelo.Usuariom;
 
 @Path("/Ejecutar_proyecto")
-public class Ejecutar_proyecto {
+public class EjecutarProyecto {
 	
-	private static final Logger log = Logger.getLogger(Ejecutar_proyecto.class);
+	private static final Logger log = Logger.getLogger(EjecutarProyecto.class);
 	
 	@GET
 	@Produces({ MediaType.TEXT_HTML })

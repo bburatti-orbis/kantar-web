@@ -1117,7 +1117,7 @@ public class MotorDao extends JdbcDaoSupport implements Serializable {
 			rs = pre.executeQuery();
 			
 			while (rs.next()) {
-				usuario.setEmai(rs.getString("email"));
+				usuario.setEmail(rs.getString("email"));
 			}
 		} catch (Exception e) {
 			 logger.error("Error, causa:" , e);
@@ -1179,7 +1179,7 @@ public class MotorDao extends JdbcDaoSupport implements Serializable {
 				t.setEstadosId(rs.getInt("Estados_id"));
 				t.setProyecto_id(rs.getInt("Proyecto_id"));
 				t.setDelay(rs.getInt("delay"));
-				t.setTiempodelay(rs.getString("tiempoDelay"));
+				t.setTiempodelay(Integer.valueOf(rs.getString("tiempoDelay")));
 				t.setFrecuencia(rs.getInt("frecuencia"));
 				t.setTiempofrecuencia(rs.getString("tiempoFrecuencia"));
 				t.setTiposTareasId(rs.getInt("TiposTareas_id"));
@@ -1242,7 +1242,7 @@ public class MotorDao extends JdbcDaoSupport implements Serializable {
 			
 			pre.setInt(1, idEjecucion);
 			pre.setInt(2, template.getId());
-			pre.setString(3, template.getTiempo());
+			pre.setInt(3, template.getTiempo());
 			pre.setInt(4, template.getIdconjunto());
 			pre.setInt(5, template.getTipo_calendario());
 			pre.setInt(6, template.getFrecuencia());

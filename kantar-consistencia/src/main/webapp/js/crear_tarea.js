@@ -33,7 +33,7 @@ $(function() {
 	});
 	
 
-var url = ruta + "gestion/gettareas?codigo="+codigo;
+	var url = ruta + "gestion/gettareas?codigo="+codigo;
 
 	
 	$.getJSON(url).done(function(dat) {
@@ -128,10 +128,8 @@ var url = ruta + "gestion/gettareas?codigo="+codigo;
 			alert("Debe ingresar el Tipo de calendario de la tarea");
 		}
 		else if(criterio.conjunto==0 && marcado==false ){
-
-				alert("Debe Elegir el conjunto de la tarea");		
+			alert("Debe Elegir el conjunto de la tarea");		
 		}
-
 		else{
 			document.getElementById("creartarea").disabled = true;
 			$.post(ruta + "gestion/insertarea", criterio, function(

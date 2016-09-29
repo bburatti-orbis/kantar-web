@@ -19,9 +19,9 @@ import cl.signosti.kantar.consistencia.modelo.Usuariom;
 
 
 @Path("/Monitor_workflow")
-public class Monitor_workflow {
+public class MonitorWorkflow {
 	
-	private static final Logger log = Logger.getLogger(Monitor_workflow.class);
+	private static final Logger log = Logger.getLogger(MonitorWorkflow.class);
 	
 	@GET
 	@Path("/statusProyecto")

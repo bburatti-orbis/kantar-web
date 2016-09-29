@@ -8,6 +8,7 @@ public class Paisesm {
 	String nombre;
 	String estado;
 	String ruta;
+	Integer idSupervisor;
 	List<Basesm> bases;
 
 	public List<Basesm> getBases() {
@@ -48,6 +49,14 @@ public class Paisesm {
 
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
+	}
+
+	public Integer getIdSupervisor() {
+		return idSupervisor;
+	}
+
+	public void setIdSupervisor(Integer idSupervisor) {
+		this.idSupervisor = idSupervisor;
 	}
 
 }

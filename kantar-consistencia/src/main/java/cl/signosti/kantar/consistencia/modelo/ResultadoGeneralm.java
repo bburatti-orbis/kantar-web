@@ -5,31 +5,38 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ResutadoGeneralm {
+public class ResultadoGeneralm {
 
-	String nombre;
+	String id;
+	String pais;
 	String idBases;
 	String glosa;
 	String descripcion;
 	String cliente;
+	String encargado;
+	String ejecutivo;
 	String measure;
 	String periodo;
-	String CI;
-	String CH;
+	String resultadoCI;
+	String resultadoCH;
+	String estadoCI;
+	String estadoCH;
 	String origen;
 	String fecha_ini;
 	String fecha_ter;
 	String estado;
 	String usuario;
 	String link;
-	
+	String panel;
+	String glosaAutorizaCI;
+	String glosaAutorizaCH;
 
-	public String getNombre() {
-		return nombre;
+	public String getPais() {
+		return pais;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 	public String getGlosa() {
@@ -56,6 +63,22 @@ public class ResutadoGeneralm {
 		this.cliente = cliente;
 	}
 
+	public String getEncargado() {
+		return encargado;
+	}
+
+	public void setEncargado(String encargado) {
+		this.encargado = encargado;
+	}
+
+	public String getEjecutivo() {
+		return ejecutivo;
+	}
+
+	public void setEjecutivo(String ejecutivo) {
+		this.ejecutivo = ejecutivo;
+	}
+
 	public String getMeasure() {
 		return measure;
 	}
@@ -72,20 +95,36 @@ public class ResutadoGeneralm {
 		this.periodo = periodo;
 	}
 
-	public String getCI() {
-		return CI;
+	public String getResultadoCI() {
+		return resultadoCI;
 	}
 
-	public void setCI(String cI) {
-		CI = cI;
+	public void setResultadoCI(String resultadoCI) {
+		this.resultadoCI = resultadoCI;
 	}
 
-	public String getCH() {
-		return CH;
+	public String getResultadoCH() {
+		return resultadoCH;
 	}
 
-	public void setCH(String cH) {
-		CH = cH;
+	public void setResultadoCH(String resultadoCH) {
+		this.resultadoCH = resultadoCH;
+	}
+
+	public String getEstadoCI() {
+		return estadoCI;
+	}
+
+	public void setEstadoCI(String estadoCI) {
+		this.estadoCI = estadoCI;
+	}
+
+	public String getEstadoCH() {
+		return estadoCH;
+	}
+
+	public void setEstadoCH(String estadoCH) {
+		this.estadoCH = estadoCH;
 	}
 
 	public String getOrigen() {
@@ -157,9 +196,37 @@ public class ResutadoGeneralm {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
-	
-	
 
-	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPanel() {
+		return panel;
+	}
+
+	public void setPanel(String panel) {
+		this.panel = panel;
+	}
+
+	public String getGlosaAutorizaCI() {
+		return glosaAutorizaCI;
+	}
+
+	public void setGlosaAutorizaCI(String glosaAutorizaCI) {
+		this.glosaAutorizaCI = glosaAutorizaCI;
+	}
+
+	public String getGlosaAutorizaCH() {
+		return glosaAutorizaCH;
+	}
+
+	public void setGlosaAutorizaCH(String glosaAutorizaCH) {
+		this.glosaAutorizaCH = glosaAutorizaCH;
+	}
+		
 }

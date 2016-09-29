@@ -22,7 +22,31 @@ public class EnvioMail {
 			throws SQLException {
 		LocatorDao.getInstance();
 		BasesDao bases = LocatorDao.getBasesDao();
-		Basesm base = bases.getbase(cod);
+		Basesm base = bases.getBase(cod);
+
+		try {
+			String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
+					"ruta_informes");
+
+			String emailBody = "La base de datos: "
+					+ base.getGlosa().toUpperCase()
+					+ " a terminado </br>"
+					+ " Para descargar el informe ingrese en el siguiente link </br>"
+					+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
+					+ "&&cod_ejec=" + ejec + "' > haz click aqui</a></br> "
+					+ "";
+
+			send(email, emailBody);
+			
+		} catch (Exception e) {
+			 logger.error("Error, causa:" ,e);
+					
+		}
+
+	}
+
+	public String send(String email, String emailBody) {
+		LocatorDao.getInstance();
 		Properties mailServerProperties;
 
 		Session getMailSession;
@@ -37,14 +61,14 @@ public class EnvioMail {
 					.recuperaValor("Password");
 			String servidor_smtp = PropertiesUtil.getInstance().recuperaValor(
 					"Servidor_SMTP");
-			String ruta_informes = PropertiesUtil.getInstance().recuperaValor(
-					"ruta_informes");
 			// Step1
 
 			mailServerProperties = System.getProperties();
 			mailServerProperties.put("mail.smtp.port", puerto);
 			mailServerProperties.put("mail.smtp.auth", "true");
 			mailServerProperties.put("mail.smtp.starttls.enable", "true");
+			mailServerProperties.put("mail.smtp.ssl.enable", "true");
+			
 
 			// Step2
 
@@ -52,15 +76,9 @@ public class EnvioMail {
 					null);
 			getMailSession.setDebug(true);
 			generateMailMessage = new MimeMessage(getMailSession);
+			generateMailMessage.setFrom(new InternetAddress(correo));
 			generateMailMessage.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(email));
-			String emailBody = "La base de datos: "
-					+ base.getGlosa().toUpperCase()
-					+ " a terminado </br>"
-					+ " Para descargar el informe ingrese en el siguiente link </br>"
-					+ " <a href='" + ruta_informes + "?cod_proceso=" + proceso
-					+ "&&cod_ejec=" + ejec + "' > haz click aqui</a></br> "
-					+ "";
 
 			generateMailMessage.setText(emailBody, "UTF-8", "html");
 
@@ -76,9 +94,9 @@ public class EnvioMail {
 			transport.close();
 		} catch (Exception e) {
 			 logger.error("Error, causa:" ,e);
-					
-		}
-
+			 return e.getMessage();
+		} 
+		
+		return null;
 	}
-
 }

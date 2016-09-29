@@ -23,11 +23,11 @@
 </head>
 
 <body>
-	<div id="dialog" title="Autorización">
-		<textarea rows="4" cols="50"></textarea><br>
-		<input id="autorizar" name="autorizar" class="boton2" type="submit"
-							value="Autorizar">
+	<div id="dialog">
+		<textarea id="glosa" rows="4" cols="50"></textarea><br>
 	</div>
+	<div id="dialog2"></div>
+
 	<div id="wrap">
 		<header>
 			<div class="logo">
@@ -86,7 +86,7 @@
 						</p>
 					</div>
 				</div>
-				<div style="">
+				<div class="control_filtro">
 					<input id="actualiza" class="boton2" type="submit"
 						value="Actualizar">
 				</div>
@@ -104,12 +104,13 @@
 				<table id="polizas">
 					<thead>
 						<tr>
+							<th scope="col"></th>
 							<th scope="col">País</th>
-							<th scope="col">Base</th>
-							<th scope="col">Categoría</th>
-							<th scope="col">Cliente</th>
-							<th scope="col">Encargado</th>
 							<th scope="col">Período</th>
+							<th scope="col">Base</th>
+							<!-- <th scope="col">Categoría</th>
+							<th scope="col">Cliente</th>  -->
+							<th scope="col">Encargado</th>
 							<th scope="col">C. Interna</th>
 							<th scope="col">C. Histórica</th>
 							<th scope="col">Inicio</th>

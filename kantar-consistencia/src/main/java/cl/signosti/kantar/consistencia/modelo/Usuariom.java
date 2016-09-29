@@ -3,7 +3,7 @@ package cl.signosti.kantar.consistencia.modelo;
 
 public class Usuariom {
 	int id;
-	String emai;
+	String email;
 	String nombre;
 	String apellido;
 	String password;
@@ -17,12 +17,12 @@ public class Usuariom {
 		this.id = id;
 	}
 
-	public String getEmai() {
-		return emai;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmai(String emai) {
-		this.emai = emai;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getNombre() {
